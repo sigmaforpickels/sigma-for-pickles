@@ -63,6 +63,8 @@ body {
   border-radius: 12px;
   cursor: pointer;
   text-align: center;
+  text-decoration: none;
+  color: white;
 }
 
 .card:hover {
@@ -99,11 +101,16 @@ body {
 
 <div class="grid">
 
+  <!-- 📘 GN MATH -->
+  <a class="card" href="https://www.gn-math.com" target="_blank">
+    📘 GN Math
+  </a>
+
+  <!-- 🎮 GAME HUB -->
   <div class="card" onclick="showGames()">
     🎮 Games
   </div>
 
-  <div class="card">App 2</div>
   <div class="card">App 3</div>
   <div class="card">App 4</div>
 
@@ -155,7 +162,7 @@ function goBack() {
   document.getElementById("gameContainer").innerHTML = "";
 }
 
-// LOAD GAMES
+// GAMES
 let score = 0;
 let randomNum = Math.floor(Math.random() * 10) + 1;
 
@@ -181,7 +188,7 @@ function loadGame(game) {
   if (game === 3) {
     document.getElementById("gameContainer").innerHTML = `
       <h3>Click Green</h3>
-      <div id="box" onclick="this.style.background='green'" 
+      <div onclick="this.style.background='green'" 
       style="width:100px;height:100px;background:red;margin:auto;"></div>
     `;
   }
