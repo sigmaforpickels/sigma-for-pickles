@@ -8,8 +8,8 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f172a,#1e293b,#312e81);
+  font-family: Arial;
+  background: #0f172a;
   color: white;
 }
 
@@ -18,34 +18,6 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  font-weight: bold;
-}
-
-/* CENTER */
-.container {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.search {
-  margin: 20px auto;
-  width: 60%;
-  display: flex;
-}
-
-.search input {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px 0 0 10px;
-  border: none;
-}
-
-.search button {
-  padding: 12px;
-  border: none;
-  background: #4f46e5;
-  color: white;
-  border-radius: 0 10px 10px 0;
 }
 
 /* GRID */
@@ -56,33 +28,30 @@ body {
   padding: 20px;
 }
 
-/* CARD */
 .card {
-  background: rgba(255,255,255,0.08);
+  background: #1e293b;
   padding: 20px;
   border-radius: 12px;
-  cursor: pointer;
   text-align: center;
-  text-decoration: none;
-  color: white;
+  cursor: pointer;
 }
 
 .card:hover {
-  background: rgba(255,255,255,0.2);
+  background: #334155;
 }
 
 /* GAME PAGE */
 #gamesPage {
   display: none;
-  padding: 20px;
   text-align: center;
+  padding: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MAIN DASHBOARD -->
+<!-- MAIN -->
 <div id="mainPage">
 
 <div class="header">
@@ -90,29 +59,17 @@ body {
   <div id="time"></div>
 </div>
 
-<div class="container">
-  <h1>Sigma for Pickles</h1>
-
-  <div class="search">
-    <input id="searchBox" placeholder="Enter website..." />
-    <button onclick="go()">Open</button>
-  </div>
-</div>
-
 <div class="grid">
 
-  <!-- 📘 GN MATH -->
+  <!-- GN MATH -->
   <a class="card" href="https://www.gn-math.com" target="_blank">
     📘 GN Math
   </a>
 
-  <!-- 🎮 GAME HUB -->
+  <!-- GAMES -->
   <div class="card" onclick="showGames()">
     🎮 Games
   </div>
-
-  <div class="card">App 3</div>
-  <div class="card">App 4</div>
 
 </div>
 
@@ -121,36 +78,27 @@ body {
 <!-- GAME HUB -->
 <div id="gamesPage">
 
-<h2>🎮 Game Hub</h2>
+<h2>Game Hub</h2>
 
 <button onclick="loadGame(1)">Click Game</button>
 <button onclick="loadGame(2)">Guess Game</button>
 <button onclick="loadGame(3)">Color Game</button>
 
-<div id="gameContainer" style="margin-top:20px;"></div>
+<div id="gameBox" style="margin-top:20px;"></div>
 
-<br><br>
+<br>
 <button onclick="goBack()">⬅ Back</button>
 
 </div>
 
 <script>
-// SEARCH
-function go() {
-  let url = document.getElementById("searchBox").value;
-  if (!url.startsWith("http")) {
-    url = "https://" + url;
-  }
-  window.open(url, "_blank");
-}
-
 // TIME
 setInterval(() => {
   document.getElementById("time").innerText =
     new Date().toLocaleTimeString();
 }, 1000);
 
-// SWITCH PAGES
+// SWITCH
 function showGames() {
   document.getElementById("mainPage").style.display = "none";
   document.getElementById("gamesPage").style.display = "block";
@@ -159,38 +107,28 @@ function showGames() {
 function goBack() {
   document.getElementById("gamesPage").style.display = "none";
   document.getElementById("mainPage").style.display = "block";
-  document.getElementById("gameContainer").innerHTML = "";
+  document.getElementById("gameBox").innerHTML = "";
 }
 
 // GAMES
 let score = 0;
-let randomNum = Math.floor(Math.random() * 10) + 1;
+let num = Math.floor(Math.random()*10)+1;
 
-function loadGame(game) {
+function loadGame(x) {
 
-  if (game === 1) {
-    document.getElementById("gameContainer").innerHTML = `
-      <h3>Click Game</h3>
-      <button onclick="score++; document.getElementById('s').innerText=score">CLICK</button>
-      <h2 id="s">0</h2>
-    `;
+  if (x === 1) {
+    document.getElementById("gameBox").innerHTML =
+      "<h3>Click Game</h3><button onclick='score++; document.getElementById(\"s\").innerText=score'>CLICK</button><h2 id='s'>0</h2>";
   }
 
-  if (game === 2) {
-    document.getElementById("gameContainer").innerHTML = `
-      <h3>Guess 1–10</h3>
-      <input id="g">
-      <button onclick="document.getElementById('r').innerText = (document.getElementById('g').value == ${randomNum}) ? 'Correct 🎉' : 'Try again'">Guess</button>
-      <p id="r"></p>
-    `;
+  if (x === 2) {
+    document.getElementById("gameBox").innerHTML =
+      "<h3>Guess 1-10</h3><input id='g'><button onclick='document.getElementById(\"r\").innerText=(document.getElementById(\"g\").value=="+num+")?\"Correct\":\"Try again\"'>Guess</button><p id='r'></p>";
   }
 
-  if (game === 3) {
-    document.getElementById("gameContainer").innerHTML = `
-      <h3>Click Green</h3>
-      <div onclick="this.style.background='green'" 
-      style="width:100px;height:100px;background:red;margin:auto;"></div>
-    `;
+  if (x === 3) {
+    document.getElementById("gameBox").innerHTML =
+      "<h3>Click Green</h3><div onclick='this.style.background=\"green\"' style='width:100px;height:100px;background:red;margin:auto;'></div>";
   }
 
 }
