@@ -42,19 +42,31 @@
       text-decoration: none;
       padding: 20px;
       border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
     }
 
     .card:hover {
       background-color: #334155;
     }
 
-    .card-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 8px;
+    .viewer {
+      padding: 20px;
     }
 
-    .card-text {
+    iframe {
+      width: 100%;
+      height: 75vh;
+      border: none;
+      border-radius: 12px;
+      background: white;
+    }
+
+    .note {
+      padding: 0 20px 20px 20px;
       color: #cbd5e1;
       font-size: 14px;
     }
@@ -68,15 +80,16 @@
   </div>
 
   <div class="grid">
-    <a class="card" href="https://gn-math.dev/" target="_blank">
-      <div class="card-title">GN Math</div>
-      <div class="card-text">Open GN Math quickly.</div>
-    </a>
+    <button class="card" onclick="openSite('https://gn-math.dev/')">GN Math</button>
+    <button class="card" onclick="openSite('https://5.thetravelingtourguide.com/#zones')">Games</button>
+  </div>
 
-    <a class="card" href="https://5.thetravelingtourguide.com/#zones" target="_blank">
-      <div class="card-title">Games</div>
-      <div class="card-text">Open Games quickly.</div>
-    </a>
+  <div class="viewer">
+    <iframe id="siteFrame" src=""></iframe>
+  </div>
+
+  <div class="note">
+    If a site stays blank inside the box, that site is blocking iframe embedding. In that case, it can only open as a normal page.
   </div>
 
   <script>
@@ -86,8 +99,13 @@
 
     setInterval(updateClock, 1000);
     updateClock();
+
+    function openSite(url) {
+      document.getElementById("siteFrame").src = url;
+    }
   </script>
 
 </body>
 </html>
+
 
