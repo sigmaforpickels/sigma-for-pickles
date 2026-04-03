@@ -163,4 +163,349 @@
     }
 
     .card {
-     
+      display: block;
+      width: 100%;
+      min-height: 145px;
+      padding: 18px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .card:hover,
+    button:hover,
+    .back-button:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .card-icon {
+      font-size: 1.7rem;
+      display: block;
+    }
+
+    .card-title {
+      display: block;
+      margin-top: 12px;
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    #gamesPage {
+      display: none;
+    }
+
+    .games-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .game-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    button,
+    .back-button {
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(30, 41, 59, 0.94);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 16px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .back-button {
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .game-box {
+      min-height: 280px;
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .game-box h3 {
+      margin-top: 0;
+    }
+
+    .big-score {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 14px;
+    }
+
+    .inline-input {
+      width: min(250px, 100%);
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(2, 6, 23, 0.8);
+      color: var(--text);
+      font: inherit;
+      margin-right: 8px;
+      margin-bottom: 10px;
+    }
+
+    .target-box {
+      width: 120px;
+      height: 120px;
+      margin: 18px auto 0;
+      border-radius: 22px;
+      background: var(--danger);
+      box-shadow: 0 14px 30px rgba(239, 68, 68, 0.2);
+      cursor: pointer;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .games-top,
+      .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .clock {
+        width: 100%;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section id="mainPage">
+      <div class="topbar">
+        <div class="brand">
+          <h1>Sigma for Pickles</h1>
+          <p>Your dashboard for school links, tools, and break-time games.</p>
+        </div>
+        <div class="clock">
+          <strong id="time">--:--:--</strong>
+          <span id="date">Loading date...</span>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="hero-card">
+          <h2>Quick Start</h2>
+          <p>This is a single-file homepage you can use on GitHub Pages. You can change the cards below to any links you want to keep on your dashboard.</p>
+          <div class="pill-row">
+            <div class="pill">Single file</div>
+            <div class="pill">Easy to edit</div>
+            <div class="pill">Mobile friendly</div>
+          </div>
+          <div class="status">
+            Tip: just change the card names and the URLs to match the sites you actually use.
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>GitHub Pages</h2>
+          <p>Upload this file as <b>index.html</b> to your repo, then turn on GitHub Pages in the repo settings.</p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Links</h2>
+        <span>Edit these anytime</span>
+      </div>
+
+      <div class="grid">
+        <a class="card" href="https://www.gn-math.com" target="_blank" rel="noreferrer">
+          <span class="card-icon">📘</span>
+          <span class="card-title">GN Math</span>
+          <span class="card-desc">Quick launch for math practice.</span>
+        </a>
+
+        <a class="card" href="https://classroom.google.com" target="_blank" rel="noreferrer">
+          <span class="card-icon">📝</span>
+          <span class="card-title">Google Classroom</span>
+          <span class="card-desc">Change this to your school portal if needed.</span>
+        </a>
+
+        <a class="card" href="https://github.com" target="_blank" rel="noreferrer">
+          <span class="card-icon">💻</span>
+          <span class="card-title">GitHub</span>
+          <span class="card-desc">Useful for hosting this page and saving changes.</span>
+        </a>
+
+        <button class="card" type="button" onclick="showGames()">
+          <span class="card-icon">🎮</span>
+          <span class="card-title">Game Hub</span>
+          <span class="card-desc">Small built-in games for quick breaks.</span>
+        </button>
+      </div>
+
+      <div class="footer-note">
+        Replace the links above with your own allowed sites.
+      </div>
+    </section>
+
+    <section id="gamesPage">
+      <div class="games-top">
+        <div>
+          <h2>Game Hub</h2>
+          <p style="color: var(--muted); margin: 6px 0 0;">Pick a game below.</p>
+        </div>
+        <a href="#" class="back-button" onclick="goBack(); return false;">Back to Dashboard</a>
+      </div>
+
+      <div class="game-buttons">
+        <button type="button" onclick="loadGame(1)">Click Game</button>
+        <button type="button" onclick="loadGame(2)">Guess Game</button>
+        <button type="button" onclick="loadGame(3)">Color Game</button>
+      </div>
+
+      <div id="gameBox" class="game-box">
+        <h3>Pick a game</h3>
+        <p style="color: var(--muted);">Choose one of the buttons above to load it here.</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const timeEl = document.getElementById("time");
+    const dateEl = document.getElementById("date");
+    const mainPage = document.getElementById("mainPage");
+    const gamesPage = document.getElementById("gamesPage");
+    const gameBox = document.getElementById("gameBox");
+
+    let clickScore = 0;
+    let guessNumber = makeGuessNumber();
+
+    function updateClock() {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      dateEl.textContent = now.toLocaleDateString([], {
+        weekday: "short",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function showGames() {
+      mainPage.style.display = "none";
+      gamesPage.style.display = "block";
+    }
+
+    function goBack() {
+      gamesPage.style.display = "none";
+      mainPage.style.display = "block";
+    }
+
+    function makeGuessNumber() {
+      return Math.floor(Math.random() * 10) + 1;
+    }
+
+    function loadGame(gameId) {
+      if (gameId === 1) {
+        gameBox.innerHTML = `
+          <h3>Click Game</h3>
+          <p style="color: var(--muted);">See how high you can get your score.</p>
+          <button type="button" onclick="increaseScore()">CLICK</button>
+          <div class="big-score" id="clickScore">${clickScore}</div>
+          <button type="button" onclick="resetClickGame()">Reset Score</button>
+        `;
+      }
+
+      if (gameId === 2) {
+        guessNumber = makeGuessNumber();
+        gameBox.innerHTML = `
+          <h3>Guess Game</h3>
+          <p style="color: var(--muted);">Pick a number from 1 to 10.</p>
+          <input class="inline-input" id="guessInput" type="number" min="1" max="10" placeholder="Enter a number">
+          <button type="button" onclick="checkGuess()">Guess</button>
+          <p id="guessResult"></p>
+        `;
+      }
+
+      if (gameId === 3) {
+        gameBox.innerHTML = `
+          <h3>Color Game</h3>
+          <p style="color: var(--muted);">Click the square to turn it green.</p>
+          <div class="target-box" id="targetBox" onclick="turnGreen()"></div>
+          <p id="colorResult"></p>
+        `;
+      }
+    }
+
+    function increaseScore() {
+      clickScore += 1;
+      document.getElementById("clickScore").textContent = clickScore;
+    }
+
+    function resetClickGame() {
+      clickScore = 0;
+      document.getElementById("clickScore").textContent = clickScore;
+    }
+
+    function checkGuess() {
+      const input = document.getElementById("guessInput");
+      const result = document.getElementById("guessResult");
+      const value = Number(input.value);
+
+      if (!value || value < 1 || value > 10) {
+        result.textContent = "Enter a number from 1 to 10.";
+        return;
+      }
+
+      if (value === guessNumber) {
+        result.textContent = "Correct. New round loaded.";
+        guessNumber = makeGuessNumber();
+        input.value = "";
+        return;
+      }
+
+      result.textContent = "Not that one. Try again.";
+    }
+
+    function turnGreen() {
+      const box = document.getElementById("targetBox");
+      const result = document.getElementById("colorResult");
+      box.style.background = "var(--accent)";
+      box.style.boxShadow = "0 14px 30px rgba(34, 197, 94, 0.28)";
+      result.textContent = "Nice. You found the green one.";
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
