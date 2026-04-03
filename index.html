@@ -16,12 +16,13 @@
       background: #1e293b;
       padding: 20px;
       position: relative;
-      cursor: pointer;
     }
 
     .title {
       font-size: 28px;
       font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
     }
 
     .time {
@@ -106,6 +107,12 @@
       margin-top: 0;
     }
 
+    .settings p {
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
     .settings label {
       display: block;
       margin-top: 10px;
@@ -145,8 +152,8 @@
 </head>
 <body>
 
-  <div class="header" id="homeButton">
-    <div class="title" id="siteTitle">Sigma for Pickles</div>
+  <div class="header">
+    <div class="title" id="homeTitle">Sigma for Pickles</div>
     <div class="time" id="time">Loading time...</div>
     <button class="gear" id="gearButton" type="button">⚙</button>
   </div>
@@ -155,6 +162,7 @@
     <div class="grid">
       <button class="card" id="card1" type="button">GN Math</button>
       <button class="card" id="card2" type="button">UniUB v4</button>
+      <button class="card" id="card3" type="button">Custom Link</button>
     </div>
 
     <div class="home-text">
@@ -167,45 +175,40 @@
   </div>
 
   <div class="settings" id="settingsBox">
-    <h3>Personalize</h3>
+    <h3>Settings</h3>
+    <p>GN Math and UniUB v4 stay fixed. You can customize only the third card.</p>
 
-    <label for="titleInput">Site Title</label>
-    <input id="titleInput" type="text">
+    <label for="customNameInput">Custom Link Title</label>
+    <input id="customNameInput" type="text" placeholder="Custom Link">
 
-    <label for="name1Input">First Button Name</label>
-    <input id="name1Input" type="text">
-
-    <label for="link1Input">First Button Link</label>
-    <input id="link1Input" type="text">
-
-    <label for="name2Input">Second Button Name</label>
-    <input id="name2Input" type="text">
-
-    <label for="link2Input">Second Button Link</label>
-    <input id="link2Input" type="text">
+    <label for="customUrlInput">Custom Link URL</label>
+    <input id="customUrlInput" type="text" placeholder="https://example.com">
 
     <button class="save-btn" id="saveButton" type="button">Save</button>
     <button class="close-btn" id="closeButton" type="button">Close</button>
   </div>
 
   <script>
-    var siteTitle = "Sigma for Pickles";
-    var card1Name = "GN Math";
-    var card1Link = "https://gn-math.dev/";
-    var card2Name = "UniUB v4";
-    var card2Link = "https://5.thetravelingtourguide.com/#zones";
+    var fixedLink1 = "https://gn-math.dev/";
+    var fixedLink2 = "https://5.thetravelingtourguide.com/#zones";
+
+    var customName = localStorage.getItem("customName") || "Custom Link";
+    var customUrl = localStorage.getItem("customUrl") || "";
 
     function updateClock() {
       document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
     }
 
     function renderPage() {
-      document.getElementById("siteTitle").innerHTML = siteTitle;
-      document.getElementById("card1").innerHTML = card1Name;
-      document.getElementById("card2").innerHTML = card2Name;
+      document.getElementById("card3").innerHTML = customName;
     }
 
     function openSite(url) {
+      if (!url) {
+        alert("Set your custom link first in Settings.");
+        return;
+      }
+
       document.getElementById("homeArea").style.display = "none";
       document.getElementById("siteFrame").style.display = "block";
       document.getElementById("siteFrame").src = url;
@@ -219,11 +222,8 @@
     }
 
     function openSettings() {
-      document.getElementById("titleInput").value = siteTitle;
-      document.getElementById("name1Input").value = card1Name;
-      document.getElementById("link1Input").value = card1Link;
-      document.getElementById("name2Input").value = card2Name;
-      document.getElementById("link2Input").value = card2Link;
+      document.getElementById("customNameInput").value = customName;
+      document.getElementById("customUrlInput").value = customUrl;
       document.getElementById("settingsBox").style.display = "block";
     }
 
@@ -232,25 +232,29 @@
     }
 
     function saveSettings() {
-      siteTitle = document.getElementById("titleInput").value || "Sigma for Pickles";
-      card1Name = document.getElementById("name1Input").value || "GN Math";
-      card1Link = document.getElementById("link1Input").value || "https://gn-math.dev/";
-      card2Name = document.getElementById("name2Input").value || "UniUB v4";
-      card2Link = document.getElementById("link2Input").value || "https://5.thetravelingtourguide.com/#zones";
+      customName = document.getElementById("customNameInput").value || "Custom Link";
+      customUrl = document.getElementById("customUrlInput").value || "";
+
+      localStorage.setItem("customName", customName);
+      localStorage.setItem("customUrl", customUrl);
 
       renderPage();
       closeSettings();
     }
 
     document.getElementById("card1").onclick = function () {
-      openSite(card1Link);
+      openSite(fixedLink1);
     };
 
     document.getElementById("card2").onclick = function () {
-      openSite(card2Link);
+      openSite(fixedLink2);
     };
 
-    document.getElementById("homeButton").onclick = function () {
+    document.getElementById("card3").onclick = function () {
+      openSite(customUrl);
+    };
+
+    document.getElementById("homeTitle").onclick = function () {
       goHome();
     };
 
