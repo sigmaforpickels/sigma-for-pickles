@@ -186,7 +186,7 @@
 
     <button class="save-btn" id="saveButton" type="button">Save</button>
     <button class="close-btn" id="closeButton" type="button">Close</button>
-    <button class="close-btn" id="clearViewerButton" type="button">Clear Viewer</button>
+    <button class="close-btn" id="exampleButton" type="button">Example</button>
   </div>
 
   <script>
@@ -243,12 +243,6 @@
       closeSettings();
     }
 
-    function clearViewer() {
-      document.getElementById("siteFrame").src = "";
-      document.getElementById("siteFrame").style.display = "none";
-      document.getElementById("homeArea").style.display = "block";
-    }
-
     document.getElementById("card1").onclick = function () {
       openSite(fixedLink1);
     };
@@ -278,8 +272,8 @@
       closeSettings();
     };
 
-    document.getElementById("clearViewerButton").onclick = function () {
-      clearViewer();
+    document.getElementById("exampleButton").onclick = function () {
+      alert("Example button clicked.");
     };
 
     updateClock();
