@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #1e293b, #0f172a);
+  background: linear-gradient(135deg,#0f172a,#1e293b,#312e81);
   color: white;
 }
 
@@ -17,97 +17,79 @@ body {
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 20px 30px;
+  padding: 20px;
   font-weight: bold;
-  font-size: 20px;
-  background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 20px rgba(99,102,241,0.4);
 }
 
 /* CENTER */
 .container {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
-h1 {
-  font-size: 42px;
-  margin-bottom: 10px;
-}
-
-/* SEARCH */
 .search {
   margin: 20px auto;
   width: 60%;
-  max-width: 500px;
   display: flex;
-  box-shadow: 0 0 20px rgba(99,102,241,0.5);
-  border-radius: 14px;
 }
 
 .search input {
   flex: 1;
-  padding: 15px;
+  padding: 12px;
+  border-radius: 10px 0 0 10px;
   border: none;
-  outline: none;
-  border-radius: 14px 0 0 14px;
 }
 
 .search button {
-  padding: 15px 20px;
+  padding: 12px;
   border: none;
-  background: linear-gradient(135deg,#6366f1,#3b82f6);
+  background: #4f46e5;
   color: white;
-  border-radius: 0 14px 14px 0;
-  cursor: pointer;
+  border-radius: 0 10px 10px 0;
 }
 
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
   gap: 20px;
-  padding: 30px;
+  padding: 20px;
 }
 
 /* CARD */
 .card {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.08);
   padding: 20px;
-  border-radius: 18px;
-  text-decoration: none;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: 0.3s;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 0 25px rgba(99,102,241,0.7);
+  background: rgba(255,255,255,0.2);
 }
 
-.title {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.desc {
-  font-size: 13px;
-  opacity: 0.7;
+/* GAME PAGE */
+#gamesPage {
+  display: none;
+  padding: 20px;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
+<!-- MAIN DASHBOARD -->
+<div id="mainPage">
+
 <div class="header">
-  <div>⚡ Sigma for Pickles</div>
+  <div>Sigma for Pickles</div>
   <div id="time"></div>
 </div>
 
 <div class="container">
-  <h1>Welcome</h1>
+  <h1>Sigma for Pickles</h1>
 
   <div class="search">
     <input id="searchBox" placeholder="Enter website..." />
@@ -117,29 +99,36 @@ h1 {
 
 <div class="grid">
 
-  <a class="card" href="#">
-    <div class="title">App 1</div>
-    <div class="desc">Your link</div>
-  </a>
+  <div class="card" onclick="showGames()">
+    🎮 Games
+  </div>
 
-  <a class="card" href="#">
-    <div class="title">App 2</div>
-    <div class="desc">Your link</div>
-  </a>
+  <div class="card">App 2</div>
+  <div class="card">App 3</div>
+  <div class="card">App 4</div>
 
-  <a class="card" href="#">
-    <div class="title">App 3</div>
-    <div class="desc">Your link</div>
-  </a>
+</div>
 
-  <a class="card" href="#">
-    <div class="title">App 4</div>
-    <div class="desc">Your link</div>
-  </a>
+</div>
+
+<!-- GAME HUB -->
+<div id="gamesPage">
+
+<h2>🎮 Game Hub</h2>
+
+<button onclick="loadGame(1)">Click Game</button>
+<button onclick="loadGame(2)">Guess Game</button>
+<button onclick="loadGame(3)">Color Game</button>
+
+<div id="gameContainer" style="margin-top:20px;"></div>
+
+<br><br>
+<button onclick="goBack()">⬅ Back</button>
 
 </div>
 
 <script>
+// SEARCH
 function go() {
   let url = document.getElementById("searchBox").value;
   if (!url.startsWith("http")) {
@@ -148,13 +137,56 @@ function go() {
   window.open(url, "_blank");
 }
 
-function updateTime() {
-  const now = new Date();
+// TIME
+setInterval(() => {
   document.getElementById("time").innerText =
-    now.toLocaleTimeString();
+    new Date().toLocaleTimeString();
+}, 1000);
+
+// SWITCH PAGES
+function showGames() {
+  document.getElementById("mainPage").style.display = "none";
+  document.getElementById("gamesPage").style.display = "block";
 }
 
-setInterval(updateTime, 1000);
+function goBack() {
+  document.getElementById("gamesPage").style.display = "none";
+  document.getElementById("mainPage").style.display = "block";
+  document.getElementById("gameContainer").innerHTML = "";
+}
+
+// LOAD GAMES
+let score = 0;
+let randomNum = Math.floor(Math.random() * 10) + 1;
+
+function loadGame(game) {
+
+  if (game === 1) {
+    document.getElementById("gameContainer").innerHTML = `
+      <h3>Click Game</h3>
+      <button onclick="score++; document.getElementById('s').innerText=score">CLICK</button>
+      <h2 id="s">0</h2>
+    `;
+  }
+
+  if (game === 2) {
+    document.getElementById("gameContainer").innerHTML = `
+      <h3>Guess 1–10</h3>
+      <input id="g">
+      <button onclick="document.getElementById('r').innerText = (document.getElementById('g').value == ${randomNum}) ? 'Correct 🎉' : 'Try again'">Guess</button>
+      <p id="r"></p>
+    `;
+  }
+
+  if (game === 3) {
+    document.getElementById("gameContainer").innerHTML = `
+      <h3>Click Green</h3>
+      <div id="box" onclick="this.style.background='green'" 
+      style="width:100px;height:100px;background:red;margin:auto;"></div>
+    `;
+  }
+
+}
 </script>
 
 </body>
