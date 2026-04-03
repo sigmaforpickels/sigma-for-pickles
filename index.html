@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f172a,#1e293b,#312e81);
+  background: radial-gradient(circle at top, #1e293b, #0f172a);
   color: white;
 }
 
@@ -18,18 +18,20 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 20px 30px;
-  font-size: 20px;
   font-weight: bold;
+  font-size: 20px;
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 0 20px rgba(99,102,241,0.4);
 }
 
 /* CENTER */
 .container {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 h1 {
-  font-size: 40px;
+  font-size: 42px;
   margin-bottom: 10px;
 }
 
@@ -39,22 +41,24 @@ h1 {
   width: 60%;
   max-width: 500px;
   display: flex;
+  box-shadow: 0 0 20px rgba(99,102,241,0.5);
+  border-radius: 14px;
 }
 
 .search input {
   flex: 1;
   padding: 15px;
-  border-radius: 12px 0 0 12px;
   border: none;
   outline: none;
+  border-radius: 14px 0 0 14px;
 }
 
 .search button {
   padding: 15px 20px;
   border: none;
-  background: #4f46e5;
+  background: linear-gradient(135deg,#6366f1,#3b82f6);
   color: white;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 14px 14px 0;
   cursor: pointer;
 }
 
@@ -68,24 +72,24 @@ h1 {
 
 /* CARD */
 .card {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
   padding: 20px;
-  border-radius: 16px;
+  border-radius: 18px;
   text-decoration: none;
   color: white;
-  transition: 0.2s;
   border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  background: rgba(255,255,255,0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px rgba(99,102,241,0.7);
 }
 
 .title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .desc {
@@ -98,15 +102,15 @@ h1 {
 <body>
 
 <div class="header">
-  <div>Sigma for Pickles</div>
+  <div>⚡ Sigma for Pickles</div>
   <div id="time"></div>
 </div>
 
 <div class="container">
-  <h1>Sigma for Pickles</h1>
+  <h1>Welcome</h1>
 
   <div class="search">
-    <input id="searchBox" placeholder="Type a website..." />
+    <input id="searchBox" placeholder="Enter website..." />
     <button onclick="go()">Open</button>
   </div>
 </div>
@@ -115,22 +119,22 @@ h1 {
 
   <a class="card" href="#">
     <div class="title">App 1</div>
-    <div class="desc">Add your link</div>
+    <div class="desc">Your link</div>
   </a>
 
   <a class="card" href="#">
     <div class="title">App 2</div>
-    <div class="desc">Add your link</div>
+    <div class="desc">Your link</div>
   </a>
 
   <a class="card" href="#">
     <div class="title">App 3</div>
-    <div class="desc">Add your link</div>
+    <div class="desc">Your link</div>
   </a>
 
   <a class="card" href="#">
     <div class="title">App 4</div>
-    <div class="desc">Add your link</div>
+    <div class="desc">Your link</div>
   </a>
 
 </div>
