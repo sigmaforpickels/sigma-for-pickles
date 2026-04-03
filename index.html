@@ -166,7 +166,7 @@
     </div>
 
     <div class="home-text">
-      Click "Sigma for Pickles" at the top anytime to go back home.
+      Click "Sigma for Pickles" to go back home.
     </div>
   </div>
 
@@ -186,6 +186,7 @@
 
     <button class="save-btn" id="saveButton" type="button">Save</button>
     <button class="close-btn" id="closeButton" type="button">Close</button>
+    <button class="close-btn" id="clearViewerButton" type="button">Clear Viewer</button>
   </div>
 
   <script>
@@ -242,6 +243,12 @@
       closeSettings();
     }
 
+    function clearViewer() {
+      document.getElementById("siteFrame").src = "";
+      document.getElementById("siteFrame").style.display = "none";
+      document.getElementById("homeArea").style.display = "block";
+    }
+
     document.getElementById("card1").onclick = function () {
       openSite(fixedLink1);
     };
@@ -269,6 +276,10 @@
 
     document.getElementById("closeButton").onclick = function () {
       closeSettings();
+    };
+
+    document.getElementById("clearViewerButton").onclick = function () {
+      clearViewer();
     };
 
     updateClock();
