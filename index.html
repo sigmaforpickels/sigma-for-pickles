@@ -1,140 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sigma for Pickles</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sigma for Pickles</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: rgba(15, 23, 42, 0.88);
+      --panel-2: rgba(30, 41, 59, 0.96);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #0f172a;
-  color: white;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-/* HEADER */
-.header {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.18), transparent 25%),
+        linear-gradient(160deg, #020617 0%, #0f172a 45%, #111827 100%);
+    }
 
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-  gap: 20px;
-  padding: 20px;
-}
+    .shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 24px auto;
+      padding: 22px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
 
-.card {
-  background: #1e293b;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-}
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
 
-.card:hover {
-  background: #334155;
-}
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      letter-spacing: 0.04em;
+    }
 
-/* GAME PAGE */
-#gamesPage {
-  display: none;
-  text-align: center;
-  padding: 20px;
-}
-</style>
-</head>
+    .brand p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
 
-<body>
+    .clock {
+      min-width: 180px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      text-align: right;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
 
-<!-- MAIN DASHBOARD -->
-<div id="mainPage">
+    .clock strong {
+      display: block;
+      font-size: 1.3rem;
+    }
 
-<div class="header">
-  <div>Sigma for Pickles</div>
-  <div id="time"></div>
-</div>
+    .clock span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
 
-<div class="grid">
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
 
-  <!-- GN MATH -->
-  <a class="card" href="https://www.gn-math.com" target="_blank">
-    📘 GN Math
-  </a>
+    .hero-card,
+    .panel {
+      padding: 20px;
+      border-radius: 22px;
+      background: var(--panel-2);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
 
-  <!-- GAMES -->
-  <div class="card" onclick="showGames()">
-    🎮 Games
-  </div>
+    .hero-card h2,
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
 
-</div>
+    .hero-card p,
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
 
-</div>
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
 
-<!-- GAME HUB -->
-<div id="gamesPage">
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      color: #dbeafe;
+      font-size: 0.92rem;
+    }
 
-<h2>🎮 Game Hub</h2>
+    .status {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-left: 4px solid var(--accent);
+      border-radius: 14px;
+      background: rgba(34, 197, 94, 0.08);
+      color: #dcfce7;
+    }
 
-<button onclick="loadGame(1)">Click Game</button>
-<button onclick="loadGame(2)">Guess Game</button>
-<button onclick="loadGame(3)">Color Game</button>
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin: 28px 0 12px;
+    }
 
-<div id="gameBox" style="margin-top:20px;"></div>
+    .section-head h2 {
+      margin: 0;
+    }
 
-<br>
-<button onclick="goBack()">⬅ Back</button>
+    .section-head span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
 
-</div>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
 
-<script>
-// CLOCK
-setInterval(() => {
-  document.getElementById("time").innerText =
-    new Date().toLocaleTimeString();
-}, 1000);
+    .card,
+    button,
+    .back-button {
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
 
-// SWITCH PAGES
-function showGames() {
-  document.getElementById("mainPage").style.display = "none";
-  document.getElementById("gamesPage").style.display = "block";
-}
-
-function goBack() {
-  document.getElementById("gamesPage").style.display = "none";
-  document.getElementById("mainPage").style.display = "block";
-  document.getElementById("gameBox").innerHTML = "";
-}
-
-// GAMES
-let score = 0;
-let num = Math.floor(Math.random()*10)+1;
-
-function loadGame(x) {
-
-  if (x === 1) {
-    document.getElementById("gameBox").innerHTML =
-      "<h3>Click Game</h3><button onclick='score++; document.getElementById(\"s\").innerText=score'>CLICK</button><h2 id='s'>0</h2>";
-  }
-
-  if (x === 2) {
-    document.getElementById("gameBox").innerHTML =
-      "<h3>Guess 1-10</h3><input id='g'><button onclick='document.getElementById(\"r\").innerText=(document.getElementById(\"g\").value=="+num+")?\"Correct 🎉\":\"Try again ❌\"'>Guess</button><p id='r'></p>";
-  }
-
-  if (x === 3) {
-    document.getElementById("gameBox").innerHTML =
-      "<h3>Click Green</h3><div onclick='this.style.background=\"green\"' style='width:100px;height:100px;background:red;margin:auto;'></div>";
-  }
-
-}
-</script>
-
-</body>
-</html>
+    .card {
+     
