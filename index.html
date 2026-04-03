@@ -8,15 +8,15 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0f172a;
+      background: #0f172a;
       color: white;
     }
 
     .header {
-      background-color: #1e293b;
+      background: #1e293b;
       padding: 20px;
-      cursor: pointer;
       position: relative;
+      cursor: pointer;
     }
 
     .title {
@@ -26,16 +26,16 @@
 
     .time {
       margin-top: 8px;
-      font-size: 18px;
       color: #cbd5e1;
+      font-size: 18px;
     }
 
-    .settings-btn {
+    .gear {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 44px;
-      height: 44px;
+      top: 15px;
+      right: 15px;
+      width: 42px;
+      height: 42px;
       border: none;
       border-radius: 12px;
       background: #334155;
@@ -44,7 +44,7 @@
       cursor: pointer;
     }
 
-    .settings-btn:hover {
+    .gear:hover {
       background: #475569;
     }
 
@@ -56,19 +56,19 @@
     }
 
     .card {
-      background-color: #1e293b;
+      background: #1e293b;
       color: white;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
       border: none;
+      border-radius: 12px;
+      padding: 20px;
       font-size: 20px;
       font-weight: bold;
+      cursor: pointer;
+      text-align: center;
     }
 
     .card:hover {
-      background-color: #334155;
+      background: #334155;
     }
 
     .viewer {
@@ -87,54 +87,48 @@
     .home-text {
       padding: 20px;
       color: #cbd5e1;
-      font-size: 16px;
     }
 
-    .settings-panel {
+    .settings {
       display: none;
       position: fixed;
-      top: 80px;
+      top: 75px;
       right: 20px;
       width: 300px;
       background: #1e293b;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      z-index: 1000;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      z-index: 999;
     }
 
-    .settings-panel h3 {
+    .settings h3 {
       margin-top: 0;
-      margin-bottom: 14px;
     }
 
-    .settings-panel label {
+    .settings label {
       display: block;
       margin-top: 10px;
-      margin-bottom: 6px;
-      font-size: 14px;
+      margin-bottom: 5px;
       color: #cbd5e1;
+      font-size: 14px;
     }
 
-    .settings-panel input {
+    .settings input {
       width: 100%;
       box-sizing: border-box;
       padding: 10px;
       border: none;
       border-radius: 8px;
       margin-bottom: 8px;
-      font-size: 14px;
     }
 
-    .panel-buttons {
-      margin-top: 10px;
-    }
-
-    .panel-buttons button {
+    .settings button {
+      margin-top: 8px;
       margin-right: 8px;
       padding: 10px 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
@@ -150,16 +144,17 @@
   </style>
 </head>
 <body>
-  <div class="header" onclick="goHome()">
+
+  <div class="header" id="homeButton">
     <div class="title" id="siteTitle">Sigma for Pickles</div>
     <div class="time" id="time">Loading time...</div>
-    <button class="settings-btn" onclick="toggleSettings(event)">⚙</button>
+    <button class="gear" id="gearButton" type="button">⚙</button>
   </div>
 
   <div id="homeArea">
     <div class="grid">
-      <button class="card" id="card1" onclick="openCard1()">GN Math</button>
-      <button class="card" id="card2" onclick="openCard2()">UniUB v4</button>
+      <button class="card" id="card1" type="button">GN Math</button>
+      <button class="card" id="card2" type="button">UniUB v4</button>
     </div>
 
     <div class="home-text">
@@ -168,59 +163,46 @@
   </div>
 
   <div class="viewer">
-    <iframe id="siteFrame" allowfullscreen allow="fullscreen"></iframe>
+    <iframe id="siteFrame" allowfullscreen></iframe>
   </div>
 
-  <div class="settings-panel" id="settingsPanel">
+  <div class="settings" id="settingsBox">
     <h3>Personalize</h3>
 
     <label for="titleInput">Site Title</label>
     <input id="titleInput" type="text">
 
-    <label for="card1NameInput">First Button Name</label>
-    <input id="card1NameInput" type="text">
+    <label for="name1Input">First Button Name</label>
+    <input id="name1Input" type="text">
 
-    <label for="card1LinkInput">First Button Link</label>
-    <input id="card1LinkInput" type="text">
+    <label for="link1Input">First Button Link</label>
+    <input id="link1Input" type="text">
 
-    <label for="card2NameInput">Second Button Name</label>
-    <input id="card2NameInput" type="text">
+    <label for="name2Input">Second Button Name</label>
+    <input id="name2Input" type="text">
 
-    <label for="card2LinkInput">Second Button Link</label>
-    <input id="card2LinkInput" type="text">
+    <label for="link2Input">Second Button Link</label>
+    <input id="link2Input" type="text">
 
-    <div class="panel-buttons">
-      <button class="save-btn" onclick="saveSettings()">Save</button>
-      <button class="close-btn" onclick="closeSettings()">Close</button>
-    </div>
+    <button class="save-btn" id="saveButton" type="button">Save</button>
+    <button class="close-btn" id="closeButton" type="button">Close</button>
   </div>
 
   <script>
+    var siteTitle = "Sigma for Pickles";
     var card1Name = "GN Math";
     var card1Link = "https://gn-math.dev/";
     var card2Name = "UniUB v4";
     var card2Link = "https://5.thetravelingtourguide.com/#zones";
-    var savedTitle = "Sigma for Pickles";
-
-    function loadSavedSettings() {
-      try {
-        savedTitle = localStorage.getItem("siteTitle") || "Sigma for Pickles";
-        card1Name = localStorage.getItem("card1Name") || "GN Math";
-        card1Link = localStorage.getItem("card1Link") || "https://gn-math.dev/";
-        card2Name = localStorage.getItem("card2Name") || "UniUB v4";
-        card2Link = localStorage.getItem("card2Link") || "https://5.thetravelingtourguide.com/#zones";
-      } catch (e) {
-      }
-    }
 
     function updateClock() {
-      document.getElementById("time").textContent = new Date().toLocaleTimeString();
+      document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
     }
 
-    function renderCards() {
-      document.getElementById("siteTitle").textContent = savedTitle;
-      document.getElementById("card1").textContent = card1Name;
-      document.getElementById("card2").textContent = card2Name;
+    function renderPage() {
+      document.getElementById("siteTitle").innerHTML = siteTitle;
+      document.getElementById("card1").innerHTML = card1Name;
+      document.getElementById("card2").innerHTML = card2Name;
     }
 
     function openSite(url) {
@@ -229,66 +211,66 @@
       document.getElementById("siteFrame").src = url;
     }
 
-    function openCard1() {
-      openSite(card1Link);
-    }
-
-    function openCard2() {
-      openSite(card2Link);
-    }
-
     function goHome() {
       document.getElementById("siteFrame").src = "";
       document.getElementById("siteFrame").style.display = "none";
       document.getElementById("homeArea").style.display = "block";
-      closeSettings();
+      document.getElementById("settingsBox").style.display = "none";
     }
 
-    function toggleSettings(event) {
-      event.stopPropagation();
-      var panel = document.getElementById("settingsPanel");
-
-      document.getElementById("titleInput").value = savedTitle;
-      document.getElementById("card1NameInput").value = card1Name;
-      document.getElementById("card1LinkInput").value = card1Link;
-      document.getElementById("card2NameInput").value = card2Name;
-      document.getElementById("card2LinkInput").value = card2Link;
-
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-      } else {
-        panel.style.display = "block";
-      }
+    function openSettings() {
+      document.getElementById("titleInput").value = siteTitle;
+      document.getElementById("name1Input").value = card1Name;
+      document.getElementById("link1Input").value = card1Link;
+      document.getElementById("name2Input").value = card2Name;
+      document.getElementById("link2Input").value = card2Link;
+      document.getElementById("settingsBox").style.display = "block";
     }
 
     function closeSettings() {
-      document.getElementById("settingsPanel").style.display = "none";
+      document.getElementById("settingsBox").style.display = "none";
     }
 
     function saveSettings() {
-      savedTitle = document.getElementById("titleInput").value || "Sigma for Pickles";
-      card1Name = document.getElementById("card1NameInput").value || "GN Math";
-      card1Link = document.getElementById("card1LinkInput").value || "https://gn-math.dev/";
-      card2Name = document.getElementById("card2NameInput").value || "UniUB v4";
-      card2Link = document.getElementById("card2LinkInput").value || "https://5.thetravelingtourguide.com/#zones";
+      siteTitle = document.getElementById("titleInput").value || "Sigma for Pickles";
+      card1Name = document.getElementById("name1Input").value || "GN Math";
+      card1Link = document.getElementById("link1Input").value || "https://gn-math.dev/";
+      card2Name = document.getElementById("name2Input").value || "UniUB v4";
+      card2Link = document.getElementById("link2Input").value || "https://5.thetravelingtourguide.com/#zones";
 
-      try {
-        localStorage.setItem("siteTitle", savedTitle);
-        localStorage.setItem("card1Name", card1Name);
-        localStorage.setItem("card1Link", card1Link);
-        localStorage.setItem("card2Name", card2Name);
-        localStorage.setItem("card2Link", card2Link);
-      } catch (e) {
-      }
-
-      renderCards();
+      renderPage();
       closeSettings();
     }
 
-    loadSavedSettings();
-    renderCards();
+    document.getElementById("card1").onclick = function () {
+      openSite(card1Link);
+    };
+
+    document.getElementById("card2").onclick = function () {
+      openSite(card2Link);
+    };
+
+    document.getElementById("homeButton").onclick = function () {
+      goHome();
+    };
+
+    document.getElementById("gearButton").onclick = function (event) {
+      event.stopPropagation();
+      openSettings();
+    };
+
+    document.getElementById("saveButton").onclick = function () {
+      saveSettings();
+    };
+
+    document.getElementById("closeButton").onclick = function () {
+      closeSettings();
+    };
+
     updateClock();
     setInterval(updateClock, 1000);
+    renderPage();
   </script>
+
 </body>
 </html>
