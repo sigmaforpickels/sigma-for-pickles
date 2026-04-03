@@ -32,8 +32,8 @@
 
     .settings-btn {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 16px;
+      right: 16px;
       width: 44px;
       height: 44px;
       border: none;
@@ -99,8 +99,8 @@
       background: #1e293b;
       border-radius: 16px;
       padding: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
     }
 
     .settings-panel h3 {
@@ -123,10 +123,14 @@
       border: none;
       border-radius: 8px;
       margin-bottom: 8px;
+      font-size: 14px;
     }
 
-    .settings-panel button {
+    .panel-buttons {
       margin-top: 10px;
+    }
+
+    .panel-buttons button {
       margin-right: 8px;
       padding: 10px 14px;
       border: none;
@@ -154,8 +158,8 @@
 
   <div id="homeArea">
     <div class="grid">
-      <button class="card" id="card1" onclick="openSite(card1Link)"></button>
-      <button class="card" id="card2" onclick="openSite(card2Link)"></button>
+      <button class="card" id="card1" onclick="openCard1()">GN Math</button>
+      <button class="card" id="card2" onclick="openCard2()">UniUB v4</button>
     </div>
 
     <div class="home-text">
@@ -164,61 +168,73 @@
   </div>
 
   <div class="viewer">
-    <iframe
-      id="siteFrame"
-      src=""
-      allowfullscreen
-      allow="fullscreen"
-      referrerpolicy="no-referrer">
-    </iframe>
+    <iframe id="siteFrame" allowfullscreen allow="fullscreen"></iframe>
   </div>
 
   <div class="settings-panel" id="settingsPanel">
     <h3>Personalize</h3>
 
-    <label>Site Title</label>
+    <label for="titleInput">Site Title</label>
     <input id="titleInput" type="text">
 
-    <label>First Button Name</label>
+    <label for="card1NameInput">First Button Name</label>
     <input id="card1NameInput" type="text">
 
-    <label>First Button Link</label>
+    <label for="card1LinkInput">First Button Link</label>
     <input id="card1LinkInput" type="text">
 
-    <label>Second Button Name</label>
+    <label for="card2NameInput">Second Button Name</label>
     <input id="card2NameInput" type="text">
 
-    <label>Second Button Link</label>
+    <label for="card2LinkInput">Second Button Link</label>
     <input id="card2LinkInput" type="text">
 
-    <button class="save-btn" onclick="saveSettings()">Save</button>
-    <button class="close-btn" onclick="closeSettings()">Close</button>
+    <div class="panel-buttons">
+      <button class="save-btn" onclick="saveSettings()">Save</button>
+      <button class="close-btn" onclick="closeSettings()">Close</button>
+    </div>
   </div>
 
   <script>
-    var card1Name = localStorage.getItem("card1Name") || "GN Math";
-    var card1Link = localStorage.getItem("card1Link") || "https://gn-math.dev/";
-    var card2Name = localStorage.getItem("card2Name") || "UniUB v4";
-    var card2Link = localStorage.getItem("card2Link") || "https://5.thetravelingtourguide.com/#zones";
-    var savedTitle = localStorage.getItem("siteTitle") || "Sigma for Pickles";
+    var card1Name = "GN Math";
+    var card1Link = "https://gn-math.dev/";
+    var card2Name = "UniUB v4";
+    var card2Link = "https://5.thetravelingtourguide.com/#zones";
+    var savedTitle = "Sigma for Pickles";
 
-    function updateClock() {
-      document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
+    function loadSavedSettings() {
+      try {
+        savedTitle = localStorage.getItem("siteTitle") || "Sigma for Pickles";
+        card1Name = localStorage.getItem("card1Name") || "GN Math";
+        card1Link = localStorage.getItem("card1Link") || "https://gn-math.dev/";
+        card2Name = localStorage.getItem("card2Name") || "UniUB v4";
+        card2Link = localStorage.getItem("card2Link") || "https://5.thetravelingtourguide.com/#zones";
+      } catch (e) {
+      }
     }
 
-    setInterval(updateClock, 1000);
-    updateClock();
+    function updateClock() {
+      document.getElementById("time").textContent = new Date().toLocaleTimeString();
+    }
 
     function renderCards() {
-      document.getElementById("siteTitle").innerHTML = savedTitle;
-      document.getElementById("card1").innerHTML = card1Name;
-      document.getElementById("card2").innerHTML = card2Name;
+      document.getElementById("siteTitle").textContent = savedTitle;
+      document.getElementById("card1").textContent = card1Name;
+      document.getElementById("card2").textContent = card2Name;
     }
 
     function openSite(url) {
       document.getElementById("homeArea").style.display = "none";
       document.getElementById("siteFrame").style.display = "block";
       document.getElementById("siteFrame").src = url;
+    }
+
+    function openCard1() {
+      openSite(card1Link);
+    }
+
+    function openCard2() {
+      openSite(card2Link);
     }
 
     function goHome() {
@@ -231,17 +247,48 @@
     function toggleSettings(event) {
       event.stopPropagation();
       var panel = document.getElementById("settingsPanel");
+
+      document.getElementById("titleInput").value = savedTitle;
+      document.getElementById("card1NameInput").value = card1Name;
+      document.getElementById("card1LinkInput").value = card1Link;
+      document.getElementById("card2NameInput").value = card2Name;
+      document.getElementById("card2LinkInput").value = card2Link;
+
       if (panel.style.display === "block") {
         panel.style.display = "none";
       } else {
-        document.getElementById("titleInput").value = savedTitle;
-        document.getElementById("card1NameInput").value = card1Name;
-        document.getElementById("card1LinkInput").value = card1Link;
-        document.getElementById("card2NameInput").value = card2Name;
-        document.getElementById("card2LinkInput").value = card2Link;
         panel.style.display = "block";
       }
     }
 
     function closeSettings() {
-      document.getElementById("settingsPanel").style.display = "
+      document.getElementById("settingsPanel").style.display = "none";
+    }
+
+    function saveSettings() {
+      savedTitle = document.getElementById("titleInput").value || "Sigma for Pickles";
+      card1Name = document.getElementById("card1NameInput").value || "GN Math";
+      card1Link = document.getElementById("card1LinkInput").value || "https://gn-math.dev/";
+      card2Name = document.getElementById("card2NameInput").value || "UniUB v4";
+      card2Link = document.getElementById("card2LinkInput").value || "https://5.thetravelingtourguide.com/#zones";
+
+      try {
+        localStorage.setItem("siteTitle", savedTitle);
+        localStorage.setItem("card1Name", card1Name);
+        localStorage.setItem("card1Link", card1Link);
+        localStorage.setItem("card2Name", card2Name);
+        localStorage.setItem("card2Link", card2Link);
+      } catch (e) {
+      }
+
+      renderCards();
+      closeSettings();
+    }
+
+    loadSavedSettings();
+    renderCards();
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
