@@ -316,3 +316,219 @@
   </script>
 </body>
 </html>
+If you want, I can make the next version with more cards and a cooler look, but still keep it copy-paste simple.
+
+
+black screen again please check over carefully
+
+
+Use this exact version. I stripped it down hard so there’s basically nothing left that should break.
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sigma for Pickles</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0f172a;
+      color: white;
+    }
+
+    .header {
+      background-color: #1e293b;
+      padding: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .time {
+      margin-top: 8px;
+      font-size: 18px;
+      color: #cbd5e1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      display: block;
+      background-color: #1e293b;
+      color: white;
+      text-decoration: none;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .card:hover {
+      background-color: #334155;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    #gamesPage {
+      display: none;
+      padding: 20px;
+    }
+
+    .game-box {
+      background-color: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-right: 10px;
+    }
+
+    .color-box {
+      width: 120px;
+      height: 120px;
+      background: red;
+      margin-top: 15px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="mainPage">
+    <div class="header">
+      <div class="title">Sigma for Pickles</div>
+      <div class="time" id="time">Loading time...</div>
+    </div>
+
+    <div class="grid">
+      <a class="card" href="https://www.gn-math.com" target="_blank">
+        <div class="card-title">GN Math</div>
+        <div class="card-text">Open GN Math quickly.</div>
+      </a>
+
+      <a class="card" href="https://classroom.google.com" target="_blank">
+        <div class="card-title">Google Classroom</div>
+        <div class="card-text">Change this link if you want.</div>
+      </a>
+
+      <a class="card" href="https://github.com" target="_blank">
+        <div class="card-title">GitHub</div>
+        <div class="card-text">Good for hosting your page.</div>
+      </a>
+
+      <a class="card" href="#" onclick="showGames(); return false;">
+        <div class="card-title">Games</div>
+        <div class="card-text">Open the game hub.</div>
+      </a>
+    </div>
+  </div>
+
+  <div id="gamesPage">
+    <h2>Game Hub</h2>
+
+    <button onclick="loadGame(1)">Click Game</button>
+    <button onclick="loadGame(2)">Guess Game</button>
+    <button onclick="loadGame(3)">Color Game</button>
+    <button onclick="goBack()">Back</button>
+
+    <div id="gameBox" class="game-box">
+      Pick a game above.
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function showGames() {
+      document.getElementById("mainPage").style.display = "none";
+      document.getElementById("gamesPage").style.display = "block";
+    }
+
+    function goBack() {
+      document.getElementById("gamesPage").style.display = "none";
+      document.getElementById("mainPage").style.display = "block";
+      document.getElementById("gameBox").innerHTML = "Pick a game above.";
+    }
+
+    var score = 0;
+    var num = Math.floor(Math.random() * 10) + 1;
+
+    function loadGame(x) {
+      if (x == 1) {
+        document.getElementById("gameBox").innerHTML =
+          "<h3>Click Game</h3>" +
+          "<button onclick='score = score + 1; document.getElementById(\"scoreNum\").innerHTML = score;'>CLICK</button>" +
+          "<h2 id='scoreNum'>" + score + "</h2>";
+      }
+
+      if (x == 2) {
+        num = Math.floor(Math.random() * 10) + 1;
+        document.getElementById("gameBox").innerHTML =
+          "<h3>Guess 1 to 10</h3>" +
+          "<input id='guessInput' type='number'>" +
+          "<button onclick='checkGuess()'>Guess</button>" +
+          "<p id='guessResult'></p>";
+      }
+
+      if (x == 3) {
+        document.getElementById("gameBox").innerHTML =
+          "<h3>Click Green</h3>" +
+          "<div class='color-box' id='colorBox' onclick='document.getElementById(\"colorBox\").style.background = \"green\"; document.getElementById(\"colorText\").innerHTML = \"Nice!\";'></div>" +
+          "<p id='colorText'></p>";
+      }
+    }
+
+    function checkGuess() {
+      var guess = document.getElementById("guessInput").value;
+      if (guess == num) {
+        document.getElementById("guessResult").innerHTML = "Correct!";
+      } else {
+        document.getElementById("guessResult").innerHTML = "Try again!";
+      }
+    }
+  </script>
+
+</body>
+</html>
