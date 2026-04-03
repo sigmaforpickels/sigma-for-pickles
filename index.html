@@ -34,6 +34,8 @@ body {
   border-radius: 12px;
   text-align: center;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
 }
 
 .card:hover {
@@ -51,7 +53,7 @@ body {
 
 <body>
 
-<!-- MAIN -->
+<!-- MAIN DASHBOARD -->
 <div id="mainPage">
 
 <div class="header">
@@ -78,7 +80,7 @@ body {
 <!-- GAME HUB -->
 <div id="gamesPage">
 
-<h2>Game Hub</h2>
+<h2>🎮 Game Hub</h2>
 
 <button onclick="loadGame(1)">Click Game</button>
 <button onclick="loadGame(2)">Guess Game</button>
@@ -92,13 +94,13 @@ body {
 </div>
 
 <script>
-// TIME
+// CLOCK
 setInterval(() => {
   document.getElementById("time").innerText =
     new Date().toLocaleTimeString();
 }, 1000);
 
-// SWITCH
+// SWITCH PAGES
 function showGames() {
   document.getElementById("mainPage").style.display = "none";
   document.getElementById("gamesPage").style.display = "block";
@@ -123,7 +125,7 @@ function loadGame(x) {
 
   if (x === 2) {
     document.getElementById("gameBox").innerHTML =
-      "<h3>Guess 1-10</h3><input id='g'><button onclick='document.getElementById(\"r\").innerText=(document.getElementById(\"g\").value=="+num+")?\"Correct\":\"Try again\"'>Guess</button><p id='r'></p>";
+      "<h3>Guess 1-10</h3><input id='g'><button onclick='document.getElementById(\"r\").innerText=(document.getElementById(\"g\").value=="+num+")?\"Correct 🎉\":\"Try again ❌\"'>Guess</button><p id='r'></p>";
   }
 
   if (x === 3) {
