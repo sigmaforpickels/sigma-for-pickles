@@ -176,15 +176,6 @@
     .example-toggle:hover {
       background: #3a4758;
     }
-
-    .example-section {
-      display: none;
-      margin-top: 8px;
-    }
-
-    .example-section.active {
-      display: block;
-    }
   </style>
 </head>
 <body>
@@ -221,16 +212,8 @@
     <label for="customUrlInput">Custom Link URL</label>
     <input id="customUrlInput" type="text" placeholder="https://example.com">
 
-    <div class="example-title" id="exampleHeading">Example</div>
+    <div class="example-title">Example</div>
     <button class="example-toggle" id="exampleButton" type="button">Example Button</button>
-
-    <div class="example-section" id="exampleSection">
-      <label for="exampleTitleInput">Example Title</label>
-      <input id="exampleTitleInput" type="text" placeholder="Example">
-
-      <label for="exampleUrlInput">Example URL</label>
-      <input id="exampleUrlInput" type="text" placeholder="https://example.com">
-    </div>
 
     <button class="save-btn" id="saveButton" type="button">Save</button>
     <button class="close-btn" id="closeButton" type="button">Close</button>
@@ -243,16 +226,12 @@
     var customName = localStorage.getItem("customName") || "Custom Link";
     var customUrl = localStorage.getItem("customUrl") || "";
 
-    var exampleTitle = localStorage.getItem("exampleTitle") || "Example";
-    var exampleUrl = localStorage.getItem("exampleUrl") || "";
-
     function updateClock() {
       document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
     }
 
     function renderPage() {
       document.getElementById("card3").innerHTML = customName;
-      document.getElementById("exampleHeading").innerHTML = exampleTitle;
     }
 
     function openSite(url) {
@@ -276,8 +255,6 @@
     function openSettings() {
       document.getElementById("customNameInput").value = customName;
       document.getElementById("customUrlInput").value = customUrl;
-      document.getElementById("exampleTitleInput").value = exampleTitle;
-      document.getElementById("exampleUrlInput").value = exampleUrl;
       document.getElementById("settingsBox").style.display = "block";
     }
 
@@ -289,25 +266,11 @@
       customName = document.getElementById("customNameInput").value || "Custom Link";
       customUrl = document.getElementById("customUrlInput").value || "";
 
-      exampleTitle = document.getElementById("exampleTitleInput").value || "Example";
-      exampleUrl = document.getElementById("exampleUrlInput").value || "";
-
       localStorage.setItem("customName", customName);
       localStorage.setItem("customUrl", customUrl);
-      localStorage.setItem("exampleTitle", exampleTitle);
-      localStorage.setItem("exampleUrl", exampleUrl);
 
       renderPage();
       closeSettings();
-    }
-
-    function toggleExampleSection() {
-      var section = document.getElementById("exampleSection");
-      if (section.classList.contains("active")) {
-        section.classList.remove("active");
-      } else {
-        section.classList.add("active");
-      }
     }
 
     document.getElementById("card1").onclick = function () {
@@ -340,7 +303,7 @@
     };
 
     document.getElementById("exampleButton").onclick = function () {
-      toggleExampleSection();
+      alert("Example Button clicked.");
     };
 
     updateClock();
