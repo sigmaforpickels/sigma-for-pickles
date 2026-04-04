@@ -163,6 +163,7 @@
       <button class="card" id="card1" type="button">GN Math</button>
       <button class="card" id="card2" type="button">UniUB v4</button>
       <button class="card" id="card3" type="button">Custom Link</button>
+      <button class="card" id="card4" type="button">Example 2</button>
     </div>
 
     <div class="home-text">
@@ -176,7 +177,7 @@
 
   <div class="settings" id="settingsBox">
     <h3>Settings</h3>
-    <p>GN Math and UniUB v4 stay fixed. You can customize only the third card.</p>
+    <p>GN Math and UniUB v4 stay fixed. You can customize the third and fourth cards.</p>
 
     <label for="customNameInput">Custom Link Title</label>
     <input id="customNameInput" type="text" placeholder="Custom Link">
@@ -184,9 +185,14 @@
     <label for="customUrlInput">Custom Link URL</label>
     <input id="customUrlInput" type="text" placeholder="https://example.com">
 
+    <label for="example2NameInput">Example 2 Title</label>
+    <input id="example2NameInput" type="text" placeholder="Example 2">
+
+    <label for="example2UrlInput">Example 2 URL</label>
+    <input id="example2UrlInput" type="text" placeholder="https://example.com">
+
     <button class="save-btn" id="saveButton" type="button">Save</button>
     <button class="close-btn" id="closeButton" type="button">Close</button>
-    <button class="close-btn" id="exampleButton" type="button">Example</button>
   </div>
 
   <script>
@@ -196,17 +202,21 @@
     var customName = localStorage.getItem("customName") || "Custom Link";
     var customUrl = localStorage.getItem("customUrl") || "";
 
+    var example2Name = localStorage.getItem("example2Name") || "Example 2";
+    var example2Url = localStorage.getItem("example2Url") || "";
+
     function updateClock() {
       document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
     }
 
     function renderPage() {
       document.getElementById("card3").innerHTML = customName;
+      document.getElementById("card4").innerHTML = example2Name;
     }
 
     function openSite(url) {
       if (!url) {
-        alert("Set your custom link first in Settings.");
+        alert("Set the link first in Settings.");
         return;
       }
 
@@ -225,6 +235,8 @@
     function openSettings() {
       document.getElementById("customNameInput").value = customName;
       document.getElementById("customUrlInput").value = customUrl;
+      document.getElementById("example2NameInput").value = example2Name;
+      document.getElementById("example2UrlInput").value = example2Url;
       document.getElementById("settingsBox").style.display = "block";
     }
 
@@ -236,8 +248,13 @@
       customName = document.getElementById("customNameInput").value || "Custom Link";
       customUrl = document.getElementById("customUrlInput").value || "";
 
+      example2Name = document.getElementById("example2NameInput").value || "Example 2";
+      example2Url = document.getElementById("example2UrlInput").value || "";
+
       localStorage.setItem("customName", customName);
       localStorage.setItem("customUrl", customUrl);
+      localStorage.setItem("example2Name", example2Name);
+      localStorage.setItem("example2Url", example2Url);
 
       renderPage();
       closeSettings();
@@ -255,6 +272,10 @@
       openSite(customUrl);
     };
 
+    document.getElementById("card4").onclick = function () {
+      openSite(example2Url);
+    };
+
     document.getElementById("homeTitle").onclick = function () {
       goHome();
     };
@@ -270,10 +291,6 @@
 
     document.getElementById("closeButton").onclick = function () {
       closeSettings();
-    };
-
-    document.getElementById("exampleButton").onclick = function () {
-      alert("Example button clicked.");
     };
 
     updateClock();
