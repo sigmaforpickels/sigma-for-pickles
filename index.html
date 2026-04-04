@@ -72,6 +72,28 @@
       background: #334155;
     }
 
+    .small-buttons {
+      padding: 0 20px 20px 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .small-btn {
+      background: #334155;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .small-btn:hover {
+      background: #475569;
+    }
+
     .viewer {
       padding: 20px;
     }
@@ -162,8 +184,11 @@
     <div class="grid">
       <button class="card" id="card1" type="button">GN Math</button>
       <button class="card" id="card2" type="button">UniUB v4</button>
-      <button class="card" id="card3" type="button">Custom Link</button>
-      <button class="card" id="card4" type="button">Example 2</button>
+    </div>
+
+    <div class="small-buttons">
+      <button class="small-btn" id="card3" type="button">Custom Link</button>
+      <button class="small-btn" id="card4" type="button">Example 2</button>
     </div>
 
     <div class="home-text">
@@ -177,7 +202,7 @@
 
   <div class="settings" id="settingsBox">
     <h3>Settings</h3>
-    <p>GN Math and UniUB v4 stay fixed. You can customize the third and fourth cards.</p>
+    <p>GN Math and UniUB v4 stay fixed. You can customize the two smaller buttons.</p>
 
     <label for="customNameInput">Custom Link Title</label>
     <input id="customNameInput" type="text" placeholder="Custom Link">
