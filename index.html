@@ -72,28 +72,6 @@
       background: #334155;
     }
 
-    .small-buttons {
-      padding: 0 20px 20px 20px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .small-btn {
-      background: #334155;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .small-btn:hover {
-      background: #475569;
-    }
-
     .viewer {
       padding: 20px;
     }
@@ -137,33 +115,6 @@
       margin-bottom: 14px;
     }
 
-    .mode-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .mode-btn {
-      min-width: 130px;
-      padding: 10px 18px;
-      border: 1px solid #475569;
-      border-radius: 14px;
-      background: #2b3645;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .mode-btn:hover {
-      background: #3a4758;
-    }
-
-    .mode-btn.active {
-      background: #425166;
-      border-color: #64748b;
-    }
-
     .settings label {
       display: block;
       margin-top: 10px;
@@ -183,7 +134,7 @@
       color: white;
     }
 
-    .settings button.action-btn {
+    .settings button {
       margin-top: 8px;
       margin-right: 8px;
       padding: 10px 14px;
@@ -202,11 +153,36 @@
       color: white;
     }
 
-    .settings-section {
-      display: none;
+    .example-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
 
-    .settings-section.active {
+    .example-toggle {
+      width: 100%;
+      padding: 10px 18px;
+      border: 1px solid #475569;
+      border-radius: 14px;
+      background: #2b3645;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .example-toggle:hover {
+      background: #3a4758;
+    }
+
+    .example-section {
+      display: none;
+      margin-top: 8px;
+    }
+
+    .example-section.active {
       display: block;
     }
   </style>
@@ -223,11 +199,7 @@
     <div class="grid">
       <button class="card" id="card1" type="button">GN Math</button>
       <button class="card" id="card2" type="button">UniUB v4</button>
-    </div>
-
-    <div class="small-buttons">
-      <button class="small-btn" id="card3" type="button">Custom Link</button>
-      <button class="small-btn" id="card4" type="button">Example 2</button>
+      <button class="card" id="card3" type="button">Custom Link</button>
     </div>
 
     <div class="home-text">
@@ -241,31 +213,27 @@
 
   <div class="settings" id="settingsBox">
     <h3>Settings</h3>
-    <p>Pick which small button you want to edit.</p>
+    <p>GN Math and UniUB v4 stay fixed. You can customize the custom card and the example section below.</p>
 
-    <div class="mode-row">
-      <button class="mode-btn active" id="tabCustom" type="button">Custom Link</button>
-      <button class="mode-btn" id="tabExample2" type="button">Example 2</button>
+    <label for="customNameInput">Custom Link Title</label>
+    <input id="customNameInput" type="text" placeholder="Custom Link">
+
+    <label for="customUrlInput">Custom Link URL</label>
+    <input id="customUrlInput" type="text" placeholder="https://example.com">
+
+    <div class="example-title" id="exampleHeading">Example</div>
+    <button class="example-toggle" id="exampleButton" type="button">Example Button</button>
+
+    <div class="example-section" id="exampleSection">
+      <label for="exampleTitleInput">Example Title</label>
+      <input id="exampleTitleInput" type="text" placeholder="Example">
+
+      <label for="exampleUrlInput">Example URL</label>
+      <input id="exampleUrlInput" type="text" placeholder="https://example.com">
     </div>
 
-    <div class="settings-section active" id="sectionCustom">
-      <label for="customNameInput">Custom Link Title</label>
-      <input id="customNameInput" type="text" placeholder="Custom Link">
-
-      <label for="customUrlInput">Custom Link URL</label>
-      <input id="customUrlInput" type="text" placeholder="https://example.com">
-    </div>
-
-    <div class="settings-section" id="sectionExample2">
-      <label for="example2NameInput">Example 2 Title</label>
-      <input id="example2NameInput" type="text" placeholder="Example 2">
-
-      <label for="example2UrlInput">Example 2 URL</label>
-      <input id="example2UrlInput" type="text" placeholder="https://example.com">
-    </div>
-
-    <button class="action-btn save-btn" id="saveButton" type="button">Save</button>
-    <button class="action-btn close-btn" id="closeButton" type="button">Close</button>
+    <button class="save-btn" id="saveButton" type="button">Save</button>
+    <button class="close-btn" id="closeButton" type="button">Close</button>
   </div>
 
   <script>
@@ -275,8 +243,8 @@
     var customName = localStorage.getItem("customName") || "Custom Link";
     var customUrl = localStorage.getItem("customUrl") || "";
 
-    var example2Name = localStorage.getItem("example2Name") || "Example 2";
-    var example2Url = localStorage.getItem("example2Url") || "";
+    var exampleTitle = localStorage.getItem("exampleTitle") || "Example";
+    var exampleUrl = localStorage.getItem("exampleUrl") || "";
 
     function updateClock() {
       document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
@@ -284,7 +252,7 @@
 
     function renderPage() {
       document.getElementById("card3").innerHTML = customName;
-      document.getElementById("card4").innerHTML = example2Name;
+      document.getElementById("exampleHeading").innerHTML = exampleTitle;
     }
 
     function openSite(url) {
@@ -308,8 +276,8 @@
     function openSettings() {
       document.getElementById("customNameInput").value = customName;
       document.getElementById("customUrlInput").value = customUrl;
-      document.getElementById("example2NameInput").value = example2Name;
-      document.getElementById("example2UrlInput").value = example2Url;
+      document.getElementById("exampleTitleInput").value = exampleTitle;
+      document.getElementById("exampleUrlInput").value = exampleUrl;
       document.getElementById("settingsBox").style.display = "block";
     }
 
@@ -321,30 +289,25 @@
       customName = document.getElementById("customNameInput").value || "Custom Link";
       customUrl = document.getElementById("customUrlInput").value || "";
 
-      example2Name = document.getElementById("example2NameInput").value || "Example 2";
-      example2Url = document.getElementById("example2UrlInput").value || "";
+      exampleTitle = document.getElementById("exampleTitleInput").value || "Example";
+      exampleUrl = document.getElementById("exampleUrlInput").value || "";
 
       localStorage.setItem("customName", customName);
       localStorage.setItem("customUrl", customUrl);
-      localStorage.setItem("example2Name", example2Name);
-      localStorage.setItem("example2Url", example2Url);
+      localStorage.setItem("exampleTitle", exampleTitle);
+      localStorage.setItem("exampleUrl", exampleUrl);
 
       renderPage();
       closeSettings();
     }
 
-    function showCustomSection() {
-      document.getElementById("tabCustom").classList.add("active");
-      document.getElementById("tabExample2").classList.remove("active");
-      document.getElementById("sectionCustom").classList.add("active");
-      document.getElementById("sectionExample2").classList.remove("active");
-    }
-
-    function showExample2Section() {
-      document.getElementById("tabExample2").classList.add("active");
-      document.getElementById("tabCustom").classList.remove("active");
-      document.getElementById("sectionExample2").classList.add("active");
-      document.getElementById("sectionCustom").classList.remove("active");
+    function toggleExampleSection() {
+      var section = document.getElementById("exampleSection");
+      if (section.classList.contains("active")) {
+        section.classList.remove("active");
+      } else {
+        section.classList.add("active");
+      }
     }
 
     document.getElementById("card1").onclick = function () {
@@ -357,10 +320,6 @@
 
     document.getElementById("card3").onclick = function () {
       openSite(customUrl);
-    };
-
-    document.getElementById("card4").onclick = function () {
-      openSite(example2Url);
     };
 
     document.getElementById("homeTitle").onclick = function () {
@@ -380,12 +339,8 @@
       closeSettings();
     };
 
-    document.getElementById("tabCustom").onclick = function () {
-      showCustomSection();
-    };
-
-    document.getElementById("tabExample2").onclick = function () {
-      showExample2Section();
+    document.getElementById("exampleButton").onclick = function () {
+      toggleExampleSection();
     };
 
     updateClock();
