@@ -1,303 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sigma for Pickles</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-    }
-
-    .header {
-      background: #1e293b;
-      padding: 20px;
-      position: relative;
-    }
-
-    .title {
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-    .time {
-      margin-top: 8px;
-      color: #cbd5e1;
-      font-size: 18px;
-    }
-
-    .gear {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 42px;
-      height: 42px;
-      border: none;
-      border-radius: 12px;
-      background: #334155;
-      color: white;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    .gear:hover {
-      background: #475569;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .card {
-      background: #1e293b;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 20px;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    .card:hover {
-      background: #334155;
-    }
-
-    .viewer {
-      padding: 20px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 75vh;
-      border: none;
-      border-radius: 12px;
-      background: white;
-      display: none;
-    }
-
-    .home-text {
-      padding: 20px;
-      color: #cbd5e1;
-    }
-
-    .settings {
-      display: none;
-      position: fixed;
-      top: 75px;
-      right: 20px;
-      width: 320px;
-      background: #1e293b;
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      z-index: 999;
-    }
-
-    .settings h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-
-    .settings label {
-      display: block;
-      margin-top: 10px;
-      margin-bottom: 5px;
-      color: #cbd5e1;
-      font-size: 14px;
-    }
-
-    .settings input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      background: #0f172a;
-      color: white;
-    }
-
-    .settings button {
-      margin-top: 8px;
-      margin-right: 8px;
-      padding: 10px 14px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .save-btn {
-      background: #2563eb;
-      color: white;
-    }
-
-    .close-btn {
-      background: #475569;
-      color: white;
-    }
-
-    .example-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 16px;
-      margin-bottom: 8px;
-    }
-
-    .example-button {
-      width: 100%;
-      padding: 12px 18px;
-      border: 1px solid #475569;
-      border-radius: 14px;
-      background: #2b3645;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .example-button:hover {
-      background: #3a4758;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sigma for Pickles</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background: #0f172a; color: white; }
+        .header { background: #1e293b; padding: 20px; position: relative; }
+        .title { font-size: 28px; font-weight: bold; cursor: pointer; display: inline-block; }
+        .time { margin-top: 8px; color: #cbd5e1; font-size: 18px; }
+        .gear { position: absolute; top: 15px; right: 15px; width: 42px; height: 42px; border: none; border-radius: 12px; background: #334155; color: white; font-size: 22px; cursor: pointer; }
+        .gear:hover { background: #475569; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; padding: 20px; }
+        .card { background: #1e293b; color: white; border: none; border-radius: 12px; padding: 20px; font-size: 20px; font-weight: bold; cursor: pointer; text-align: center; }
+        .card:hover { background: #334155; }
+        .viewer { padding: 20px; }
+        iframe { width: 100%; height: 75vh; border: none; border-radius: 12px; background: white; display: none; }
+        .home-text { padding: 20px; color: #cbd5e1; }
+        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 320px; background: #1e293b; border-radius: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 999; max-height: 80vh; overflow-y: auto; }
+        .settings h3 { margin-top: 0; margin-bottom: 10px; }
+        .settings label { display: block; margin-top: 10px; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
+        .settings input { width: 100%; box-sizing: border-box; padding: 10px; border: none; border-radius: 8px; margin-bottom: 8px; background: #0f172a; color: white; }
+        .settings button { margin-top: 8px; margin-right: 8px; padding: 10px 14px; border: none; border-radius: 8px; cursor: pointer; }
+        .save-btn { background: #2563eb; color: white; }
+        .close-btn { background: #475569; color: white; }
+    </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="title" id="homeTitle">Sigma for Pickles</div>
-    <div class="time" id="time">Loading time...</div>
-    <button class="gear" id="gearButton" type="button">⚙</button>
-  </div>
-
-  <div id="homeArea">
-    <div class="grid">
-      <button class="card" id="card1" type="button">GN Math</button>
-      <button class="card" id="card2" type="button">UniUB v4</button>
-      <button class="card" id="card3" type="button">Custom Link</button>
+    <div class="header">
+        <div class="title" id="homeTitle">Sigma for Pickles</div>
+        <div class="time" id="time">Loading time...</div>
+        <button class="gear" id="gearButton" type="button">⚙</button>
     </div>
 
-    <div class="home-text">
-      Click "Sigma for Pickles" to go back home.
+    <div id="homeArea">
+        <div class="grid">
+            <button class="card" id="card1" type="button">GN Math</button>
+            <button class="card" id="card2" type="button">UniUB v4</button>
+            <button class="card" id="card3" type="button">Custom Link</button>
+        </div>
+        <div class="home-text">
+            Click "Sigma for Pickles" to go back home.
+        </div>
     </div>
-  </div>
 
-  <div class="viewer">
-    <iframe id="siteFrame" allowfullscreen></iframe>
-  </div>
+    <div class="viewer">
+        <iframe id="siteFrame" allowfullscreen></iframe>
+    </div>
 
-  <div class="settings" id="settingsBox">
-    <h3>Settings</h3>
+    <!-- SETTINGS BOX -->
+    <div class="settings" id="settingsBox">
+        <h3>Settings</h3>
+        
+        <label for="mask-title">Tab Mask Title</label>
+        <input id="mask-title" type="text" placeholder="e.g. Google Drive">
+        
+        <label for="mask-icon">Tab Mask Icon (URL)</label>
+        <input id="mask-icon" type="text" placeholder="https://google.com">
+        
+        <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;">
 
-    <label for="customNameInput">Custom Link Title</label>
-    <input id="customNameInput" type="text" placeholder="Custom Link">
+        <label for="customNameInput">Custom Link Name</label>
+        <input id="customNameInput" type="text" placeholder="My Site">
 
-    <label for="customUrlInput">Custom Link URL</label>
-    <input id="customUrlInput" type="text" placeholder="https://example.com">
+        <label for="customUrlInput">Custom Link URL</label>
+        <input id="customUrlInput" type="text" placeholder="https://example.com">
 
-    <div class="example-title">Example</div>
-    <button class="example-button" id="exampleButton" type="button">Example Button</button>
+        <button class="save-btn" id="saveButton" type="button">Save Settings</button>
+        <button class="close-btn" id="closeButton" type="button">Close</button>
+    </div>
 
-    <button class="save-btn" id="saveButton" type="button">Save</button>
-    <button class="close-btn" id="closeButton" type="button">Close</button>
-  </div>
-
-  <script>
+<script>
     var fixedLink1 = "https://gn-math.dev/";
     var fixedLink2 = "https://5.thetravelingtourguide.com/#zones";
+    
+    // Load saved settings
     var customName = localStorage.getItem("customName") || "Custom Link";
     var customUrl = localStorage.getItem("customUrl") || "";
+    var maskTitle = localStorage.getItem("maskTitle") || "Sigma for Pickles";
+    var maskIcon = localStorage.getItem("maskIcon") || "";
 
     function updateClock() {
-      document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
+        document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
     }
 
     function renderPage() {
-      document.getElementById("card3").innerHTML = customName;
+        document.getElementById("card3").innerHTML = customName;
     }
 
-    function openSite(url) {
-      if (!url) {
-        alert("Set the link first in Settings.");
-        return;
-      }
-      document.getElementById("homeArea").style.display = "none";
-      document.getElementById("siteFrame").style.display = "block";
-      document.getElementById("siteFrame").src = url;
+    // UPDATED: Proxy Opening Function
+    function openProxy(url) {
+        if (!url) {
+            alert("Set the link first in Settings.");
+            return;
+        }
+
+        const win = window.open('about:blank', '_blank');
+        if (!win) return alert('Pop-up blocked! Please allow pop-ups for this site.');
+
+        const title = localStorage.getItem("maskTitle") || "New Tab";
+        const icon = localStorage.getItem("maskIcon") || "";
+
+        win.document.write(`
+            <html>
+                <head>
+                    <title>${title}</title>
+                    <link rel="icon" href="${icon}">
+                    <style>
+                        body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}
+                        iframe{width:100%;height:100%;border:none;}
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${url}" referrerpolicy="no-referrer"></iframe>
+                </body>
+            </html>
+        `);
+        win.document.close();
     }
 
     function goHome() {
-      document.getElementById("siteFrame").src = "";
-      document.getElementById("siteFrame").style.display = "none";
-      document.getElementById("homeArea").style.display = "block";
-      document.getElementById("settingsBox").style.display = "none";
+        document.getElementById("siteFrame").src = "";
+        document.getElementById("siteFrame").style.display = "none";
+        document.getElementById("homeArea").style.display = "block";
+        document.getElementById("settingsBox").style.display = "none";
     }
 
     function openSettings() {
-      document.getElementById("customNameInput").value = customName;
-      document.getElementById("customUrlInput").value = customUrl;
-      document.getElementById("settingsBox").style.display = "block";
+        document.getElementById("customNameInput").value = customName;
+        document.getElementById("customUrlInput").value = customUrl;
+        document.getElementById("mask-title").value = maskTitle;
+        document.getElementById("mask-icon").value = maskIcon;
+        document.getElementById("settingsBox").style.display = "block";
     }
 
     function closeSettings() {
-      document.getElementById("settingsBox").style.display = "none";
+        document.getElementById("settingsBox").style.display = "none";
     }
 
     function saveSettings() {
-      customName = document.getElementById("customNameInput").value || "Custom Link";
-      customUrl = document.getElementById("customUrlInput").value || "";
-      localStorage.setItem("customName", customName);
-      localStorage.setItem("customUrl", customUrl);
-      renderPage();
-      closeSettings();
+        customName = document.getElementById("customNameInput").value || "Custom Link";
+        customUrl = document.getElementById("customUrlInput").value || "";
+        maskTitle = document.getElementById("mask-title").value || "Sigma for Pickles";
+        maskIcon = document.getElementById("mask-icon").value || "";
+
+        localStorage.setItem("customName", customName);
+        localStorage.setItem("customUrl", customUrl);
+        localStorage.setItem("maskTitle", maskTitle);
+        localStorage.setItem("maskIcon", maskIcon);
+
+        renderPage();
+        closeSettings();
+        alert("Settings Saved!");
     }
 
-    document.getElementById("card1").onclick = function() {
-      openSite(fixedLink1);
-    };
-
-    document.getElementById("card2").onclick = function() {
-      openSite(fixedLink2);
-    };
-
-    document.getElementById("card3").onclick = function() {
-      openSite(customUrl);
-    };
-
-    document.getElementById("homeTitle").onclick = function() {
-      goHome();
-    };
-
-    document.getElementById("gearButton").onclick = function(event) {
-      event.stopPropagation();
-      openSettings();
-    };
-
-    document.getElementById("saveButton").onclick = function() {
-      saveSettings();
-    };
-
-    document.getElementById("closeButton").onclick = function() {
-      closeSettings();
-    };
-
-    document.getElementById("exampleButton").onclick = function() {
-      alert("Example Button clicked.");
-    };
+    // Event Listeners
+    document.getElementById("card1").onclick = function() { openProxy(fixedLink1); };
+    document.getElementById("card2").onclick = function() { openProxy(fixedLink2); };
+    document.getElementById("card3").onclick = function() { openProxy(customUrl); };
+    document.getElementById("homeTitle").onclick = function() { goHome(); };
+    document.getElementById("gearButton").onclick = function(e) { e.stopPropagation(); openSettings(); };
+    document.getElementById("saveButton").onclick = function() { saveSettings(); };
+    document.getElementById("closeButton").onclick = function() { closeSettings(); };
 
     updateClock();
     setInterval(updateClock, 1000);
     renderPage();
-  </script>
-
+</script>
 </body>
 </html>
