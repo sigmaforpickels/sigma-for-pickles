@@ -38,7 +38,6 @@
         <div class="grid">
             <button class="card" id="card1" type="button">GN Math</button>
             <button class="card" id="card2" type="button">UniUB v4</button>
-            <button class="card" id="card3" type="button">Custom Link</button>
         </div>
         <div class="home-text">
             Click "Sigma for Pickles" to go back home.
@@ -53,13 +52,10 @@
         <h3>Settings</h3>
         <label for="mask-title">Tab Mask Title</label>
         <input id="mask-title" type="text" placeholder="e.g. Google Drive">
+        
         <label for="mask-icon">Tab Mask Icon (URL)</label>
         <input id="mask-icon" type="text" placeholder="https://google.com">
-        <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;">
-        <label for="customNameInput">Custom Link Name</label>
-        <input id="customNameInput" type="text" placeholder="My Site">
-        <label for="customUrlInput">Custom Link URL</label>
-        <input id="customUrlInput" type="text" placeholder="https://example.com">
+        
         <button class="save-btn" id="saveButton" type="button">Save Settings</button>
         <button class="close-btn" id="closeButton" type="button">Close</button>
     </div>
@@ -67,8 +63,8 @@
 <script>
     var fixedLink1 = "https://gn-math.dev";
     var fixedLink2 = "https://thetravelingtourguide.com";
-    var customName = localStorage.getItem("customName") || "Custom Link";
-    var customUrl = localStorage.getItem("customUrl") || "";
+    
+    // Load saved settings
     var maskTitle = localStorage.getItem("maskTitle") || "Sigma for Pickles";
     var maskIcon = localStorage.getItem("maskIcon") || "";
 
@@ -76,23 +72,13 @@
         document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
     }
 
-    function renderPage() {
-        document.getElementById("card3").innerHTML = customName;
-    }
-
     function openProxy(url) {
-        if (!url) {
-            alert("Set the link first in Settings.");
-            return;
-        }
-
         const win = window.open('about:blank', '_blank');
         if (!win) return alert('Pop-up blocked!');
 
         const title = localStorage.getItem("maskTitle") || "New Tab";
         const icon = localStorage.getItem("maskIcon") || "";
 
-        // ADDED SANDBOX: blocks popups and top-level navigation (redirects)
         win.document.write(`
             <html>
                 <head>
@@ -123,8 +109,6 @@
     }
 
     function openSettings() {
-        document.getElementById("customNameInput").value = customName;
-        document.getElementById("customUrlInput").value = customUrl;
         document.getElementById("mask-title").value = maskTitle;
         document.getElementById("mask-icon").value = maskIcon;
         document.getElementById("settingsBox").style.display = "block";
@@ -135,22 +119,18 @@
     }
 
     function saveSettings() {
-        customName = document.getElementById("customNameInput").value || "Custom Link";
-        customUrl = document.getElementById("customUrlInput").value || "";
         maskTitle = document.getElementById("mask-title").value || "Sigma for Pickles";
         maskIcon = document.getElementById("mask-icon").value || "";
-        localStorage.setItem("customName", customName);
-        localStorage.setItem("customUrl", customUrl);
+
         localStorage.setItem("maskTitle", maskTitle);
         localStorage.setItem("maskIcon", maskIcon);
-        renderPage();
+
         closeSettings();
         alert("Settings Saved!");
     }
 
     document.getElementById("card1").onclick = function() { openProxy(fixedLink1); };
     document.getElementById("card2").onclick = function() { openProxy(fixedLink2); };
-    document.getElementById("card3").onclick = function() { openProxy(customUrl); };
     document.getElementById("homeTitle").onclick = function() { goHome(); };
     document.getElementById("gearButton").onclick = function(e) { e.stopPropagation(); openSettings(); };
     document.getElementById("saveButton").onclick = function() { saveSettings(); };
@@ -158,7 +138,6 @@
 
     updateClock();
     setInterval(updateClock, 1000);
-    renderPage();
 </script>
 </body>
 </html>
