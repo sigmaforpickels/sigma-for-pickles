@@ -49,33 +49,24 @@
         <iframe id="siteFrame" allowfullscreen></iframe>
     </div>
 
-    <!-- SETTINGS BOX -->
     <div class="settings" id="settingsBox">
         <h3>Settings</h3>
-        
         <label for="mask-title">Tab Mask Title</label>
         <input id="mask-title" type="text" placeholder="e.g. Google Drive">
-        
         <label for="mask-icon">Tab Mask Icon (URL)</label>
         <input id="mask-icon" type="text" placeholder="https://google.com">
-        
         <hr style="border: 0; border-top: 1px solid #334155; margin: 15px 0;">
-
         <label for="customNameInput">Custom Link Name</label>
         <input id="customNameInput" type="text" placeholder="My Site">
-
         <label for="customUrlInput">Custom Link URL</label>
         <input id="customUrlInput" type="text" placeholder="https://example.com">
-
         <button class="save-btn" id="saveButton" type="button">Save Settings</button>
         <button class="close-btn" id="closeButton" type="button">Close</button>
     </div>
 
 <script>
-    var fixedLink1 = "https://gn-math.dev/";
-    var fixedLink2 = "https://5.thetravelingtourguide.com/#zones";
-    
-    // Load saved settings
+    var fixedLink1 = "https://gn-math.dev";
+    var fixedLink2 = "https://thetravelingtourguide.com";
     var customName = localStorage.getItem("customName") || "Custom Link";
     var customUrl = localStorage.getItem("customUrl") || "";
     var maskTitle = localStorage.getItem("maskTitle") || "Sigma for Pickles";
@@ -89,7 +80,6 @@
         document.getElementById("card3").innerHTML = customName;
     }
 
-    // UPDATED: Proxy Opening Function
     function openProxy(url) {
         if (!url) {
             alert("Set the link first in Settings.");
@@ -97,11 +87,12 @@
         }
 
         const win = window.open('about:blank', '_blank');
-        if (!win) return alert('Pop-up blocked! Please allow pop-ups for this site.');
+        if (!win) return alert('Pop-up blocked!');
 
         const title = localStorage.getItem("maskTitle") || "New Tab";
         const icon = localStorage.getItem("maskIcon") || "";
 
+        // ADDED SANDBOX: blocks popups and top-level navigation (redirects)
         win.document.write(`
             <html>
                 <head>
@@ -113,7 +104,11 @@
                     </style>
                 </head>
                 <body>
-                    <iframe src="${url}" referrerpolicy="no-referrer"></iframe>
+                    <iframe src="${url}" 
+                            referrerpolicy="no-referrer" 
+                            sandbox="allow-forms allow-scripts allow-same-origin allow-downloads"
+                            allowfullscreen>
+                    </iframe>
                 </body>
             </html>
         `);
@@ -144,18 +139,15 @@
         customUrl = document.getElementById("customUrlInput").value || "";
         maskTitle = document.getElementById("mask-title").value || "Sigma for Pickles";
         maskIcon = document.getElementById("mask-icon").value || "";
-
         localStorage.setItem("customName", customName);
         localStorage.setItem("customUrl", customUrl);
         localStorage.setItem("maskTitle", maskTitle);
         localStorage.setItem("maskIcon", maskIcon);
-
         renderPage();
         closeSettings();
         alert("Settings Saved!");
     }
 
-    // Event Listeners
     document.getElementById("card1").onclick = function() { openProxy(fixedLink1); };
     document.getElementById("card2").onclick = function() { openProxy(fixedLink2); };
     document.getElementById("card3").onclick = function() { openProxy(customUrl); };
