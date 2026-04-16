@@ -5,96 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sigma for Pickles</title>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: #0f172a; color: white; }
-        .header { background: #1e293b; padding: 20px; position: relative; }
-        .title { font-size: 28px; font-weight: bold; cursor: pointer; display: inline-block; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; overflow-x: hidden; }
+        .header { background: #1e293b; padding: 20px; position: relative; border-bottom: 2px solid #334155; }
+        .title { font-size: 28px; font-weight: bold; cursor: pointer; color: #38bdf8; }
         .time { margin-top: 8px; color: #cbd5e1; font-size: 18px; }
         .gear { position: absolute; top: 15px; right: 15px; width: 42px; height: 42px; border: none; border-radius: 12px; background: #334155; color: white; font-size: 22px; cursor: pointer; }
         .gear:hover { background: #475569; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: #1e293b; color: white; border: none; border-radius: 12px; padding: 20px; font-size: 20px; font-weight: bold; cursor: pointer; text-align: center; }
-        .card:hover { background: #334155; }
-        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 320px; background: #1e293b; border-radius: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 999; }
-        .settings label { display: block; margin-top: 10px; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
-        .settings input { width: 100%; box-sizing: border-box; padding: 10px; border: none; border-radius: 8px; margin-bottom: 8px; background: #0f172a; color: white; }
-        .settings button { margin-top: 8px; margin-right: 8px; padding: 10px 14px; border: none; border-radius: 8px; cursor: pointer; }
-        .save-btn { background: #2563eb; color: white; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
+        .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 25px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
+        
+        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 300px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; }
+        .settings h3 { margin: 0 0 15px 0; }
+        .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
+        .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
+        .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
+        .save-btn { background: #2563eb; color: white; margin-bottom: 8px; }
         .close-btn { background: #475569; color: white; }
+
+        /* Viewer for games */
+        .viewer { display: none; width: 100%; height: calc(100vh - 120px); }
+        .viewer iframe { width: 100%; height: 100%; border: none; background: white; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="title" onclick="location.reload()">Sigma for Pickles</div>
-        <div class="time" id="time">Loading time...</div>
-        <button class="gear" id="gearButton">⚙</button>
-    </div>
+    <div id="main-content">
+        <div class="header">
+            <div class="title" onclick="goHome()">Sigma for Pickles</div>
+            <div class="time" id="time">00:00:00</div>
+            <button class="gear" id="gearBtn">⚙</button>
+        </div>
 
-    <div class="grid">
-        <button class="card" onclick="openCloaked('https://gn-math.dev')">GN Math</button>
-        <button class="card" onclick="openCloaked('https://thetravelingtourguide.com')">UniUB v4</button>
+        <div id="homeArea">
+            <div class="grid">
+                <button class="card" onclick="openGame('https://gn-math.dev')">GN Math</button>
+                <button class="card" onclick="openGame('https://thetravelingtourguide.com')">UniUB v4</button>
+                <button class="card" onclick="openGame('https://coolmathgames.com')">Cool Math Games</button>
+            </div>
+        </div>
+
+        <div id="gameViewer" class="viewer">
+            <iframe id="siteFrame" allowfullscreen></iframe>
+        </div>
     </div>
 
     <div class="settings" id="settingsBox">
-        <h3>Tab Mask Settings</h3>
-        <label>Tab Title</label>
-        <input id="mask-title" type="text" placeholder="e.g. My Drive">
-        <label>Favicon URL</label>
-        <input id="mask-icon" type="text" placeholder="https://google.com">
-        <button class="save-btn" onclick="saveSettings()">Save</button>
-        <button class="close-btn" onclick="document.getElementById('settingsBox').style.display='none'">Close</button>
+        <h3>Tab Settings</h3>
+        <label>Tab Name</label>
+        <input id="tab-name" type="text" placeholder="e.g. Google Drive">
+        <label>Icon URL</label>
+        <input id="tab-icon" type="text" placeholder="https://google.com">
+        <button class="save-btn" onclick="saveSettings()">Save & Refresh</button>
+        <button class="close-btn" onclick="toggleSettings()">Close</button>
     </div>
 
 <script>
-    function openCloaked(url) {
-        const title = localStorage.getItem("maskTitle") || "New Tab";
-        const icon = localStorage.getItem("maskIcon") || "";
+    // --- 1. INSTANT ABOUT:BLANK CLOAK ---
+    (function() {
+        // Only run the cloak if we are NOT already inside an about:blank frame
+        if (window === window.top && !window.location.href.includes('blob:')) {
+            const url = window.location.href;
+            const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
+            const icon = localStorage.getItem("cloakIcon") || "";
 
-        // This creates a "Virtual File" to open in the new tab
-        const html = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>${title}</title>
-                <link rel="icon" href="${icon}">
-                <style>
-                    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
-                    iframe { width: 100%; height: 100%; border: none; }
-                </style>
-            </head>
-            <body>
-                <iframe src="${url}" allowfullscreen></iframe>
-            </body>
-            </html>
-        `;
-
-        const blob = new Blob([html], { type: 'text/html' });
-        const blobUrl = URL.createObjectURL(blob);
-        
-        // Open the blob file instead of about:blank
-        const newWin = window.open(blobUrl, '_blank');
-        
-        if (!newWin) {
-            alert("❌ Pop-up blocked! Please allow pop-ups for this site in your browser settings.");
+            const win = window.open('about:blank', '_blank');
+            if (win) {
+                win.document.write(`
+                    <html>
+                    <head>
+                        <title>${title}</title>
+                        <link rel="icon" href="${icon}">
+                        <style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style>
+                    </head>
+                    <body>
+                        <iframe src="${url}"></iframe>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+                // Redirect original GitHub tab to Google for safety
+                window.location.replace("https://google.com");
+            }
         }
+    })();
+
+    // --- 2. GAME LOGIC ---
+    function openGame(url) {
+        document.getElementById("homeArea").style.display = "none";
+        document.getElementById("gameViewer").style.display = "block";
+        document.getElementById("siteFrame").src = url;
     }
 
+    function goHome() {
+        document.getElementById("siteFrame").src = "";
+        document.getElementById("gameViewer").style.display = "none";
+        document.getElementById("homeArea").style.display = "block";
+    }
+
+    // --- 3. SETTINGS LOGIC ---
     function saveSettings() {
-        localStorage.setItem("maskTitle", document.getElementById("mask-title").value);
-        localStorage.setItem("maskIcon", document.getElementById("mask-icon").value);
-        document.getElementById('settingsBox').style.display='none';
-        alert("Settings Saved!");
+        localStorage.setItem("cloakName", document.getElementById("tab-name").value);
+        localStorage.setItem("cloakIcon", document.getElementById("tab-icon").value);
+        location.reload();
     }
 
-    document.getElementById("gearButton").onclick = () => {
-        document.getElementById("mask-title").value = localStorage.getItem("maskTitle") || "";
-        document.getElementById("mask-icon").value = localStorage.getItem("maskIcon") || "";
-        document.getElementById("settingsBox").style.display = "block";
-    };
+    function toggleSettings() {
+        const box = document.getElementById("settingsBox");
+        box.style.display = (box.style.display === "block") ? "none" : "block";
+        document.getElementById("tab-name").value = localStorage.getItem("cloakName") || "";
+        document.getElementById("tab-icon").value = localStorage.getItem("cloakIcon") || "";
+    }
 
-    setInterval(() => {
-        document.getElementById("time").innerHTML = new Date().toLocaleTimeString();
-    }, 1000);
+    document.getElementById("gearBtn").onclick = toggleSettings;
+    setInterval(() => { document.getElementById("time").innerHTML = new Date().toLocaleTimeString(); }, 1000);
 </script>
 </body>
 </html>
