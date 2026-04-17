@@ -11,17 +11,22 @@
         .time { margin-top: 8px; color: #cbd5e1; font-size: 18px; }
         .gear { position: absolute; top: 15px; right: 15px; width: 42px; height: 42px; border: none; border-radius: 12px; background: #334155; color: white; font-size: 22px; cursor: pointer; }
         .gear:hover { background: #475569; }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 20px; }
         .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; min-height: 80px; }
         .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
+
         .settings { display: none; position: fixed; top: 75px; right: 20px; width: 320px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; max-height: 85vh; overflow-y: auto; }
         .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
         .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
+        
         .launch-btn { background: #38bdf8; color: #0f172a; }
         .save-btn { background: #2563eb; color: white; }
         .close-btn { background: #475569; color: white; }
+
         .refresh-note { padding: 20px; color: #64748b; font-size: 13px; text-align: center; font-style: italic; }
+
         #hidden-proxy-section { display: none; margin-top: 15px; border-top: 1px solid #334155; padding-top: 15px; }
         .proxy-btn { background: #334155; color: #94a3b8; font-size: 13px; text-align: left; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; border: 1px solid transparent; }
         .proxy-btn:hover { border-color: #38bdf8; color: white; }
@@ -41,7 +46,7 @@
             <button class="card" onclick="cloak('https://coolmathgames.com')">Cool Math Games</button>
             <button class="card" onclick="cloak('https://mathstudy.xyz')">UniUB v4</button>
             
-            <!-- ONLY n-gon launches in a separate tab -->
+            <!-- Isolated for physics support -->
             <button class="card" onclick="openIsolated('https://github.io')">n-gon</button>
             
             <button class="card" onclick="cloak('https://wikilegia.org')">Utopia</button>
@@ -60,12 +65,15 @@
         <label>Icon URL</label>
         <input id="tab-icon" type="text" placeholder="Icon URL">
         <button class="save-btn" onclick="saveSettings()">Save Tab Info</button>
+        
         <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
         <button class="launch-btn" onclick="launchAboutBlank()">🚀 Launch About:Blank Tab</button>
+
         <div id="hidden-proxy-section">
             <h4 style="color: #38bdf8; margin: 5px 0 10px 0;">Hidden Proxies</h4>
             <div id="proxyList"></div>
         </div>
+        
         <button class="close-btn" onclick="toggleSettings()" style="margin-top: 10px;">Close</button>
     </div>
 
@@ -91,35 +99,20 @@
         proxyList.appendChild(btn);
     });
 
-    // --- SEPARATE TAB LAUNCHER (ONLY FOR n-gon) ---
+    // LAUNCHES n-gon IN A NEW HIDDEN TAB
     function openIsolated(targetUrl) {
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
-
         const win = window.open('about:blank', '_blank');
         if (win) {
-            win.document.write(`
-                <html>
-                <head>
-                    <title>${title}</title>
-                    <link rel="icon" href="${icon}">
-                    <style>
-                        body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}
-                        iframe{width:100%;height:100%;border:none;}
-                    </style>
-                </head>
-                <body>
-                    <iframe src="${targetUrl}" allowfullscreen referrerpolicy="no-referrer"></iframe>
-                </body>
-                </html>
-            `);
+            win.document.write(`<html><head><title>${title}</title><link rel="icon" href="${icon}"><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="${targetUrl}" allowfullscreen referrerpolicy="no-referrer"></iframe></body></html>`);
             win.document.close();
         } else {
-            alert("❌ Pop-up blocked! Allow pop-ups to open n-gon in a hidden tab.");
+            alert("❌ Pop-up blocked! Allow pop-ups to open n-gon.");
         }
     }
 
-    // --- SAME TAB LAUNCHER (FOR EVERYTHING ELSE) ---
+    // CLOAKS GAMES IN THE SAME TAB
     function cloak(url) {
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
@@ -128,6 +121,7 @@
         document.close();
     }
 
+    // LAUNCHES ENTIRE SITE IN ABOUT:BLANK
     function launchAboutBlank() {
         const url = window.location.href;
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
@@ -154,6 +148,7 @@
         }
     }
 
+    // SECRET KEYCODE (Shift + Ctrl + M) while menu is open
     document.addEventListener('keydown', function(e) {
         const box = document.getElementById("settingsBox");
         if (box.style.display === "block") {
