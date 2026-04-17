@@ -16,10 +16,7 @@
         .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; min-height: 80px; }
         .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
         
-        /* Gold border for Google Games */
         .google-card { border-color: #fbbf24 !important; }
-        .google-card:hover { border-color: #f59e0b !important; }
-
         .settings { display: none; position: fixed; top: 75px; right: 20px; width: 300px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; }
         .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
@@ -39,21 +36,8 @@
             <button class="gear" id="gearBtn">⚙</button>
         </div>
 
-        <div class="grid">
-            <!-- Plunker Games -->
-            <button class="card" onclick="cloak('https://plnkr.co')">n-gon</button>
-            <button class="card" onclick="cloak('https://plnkr.coutopia.html')">Utopia</button>
-            
-            <!-- Standard Games -->
-            <button class="card" onclick="cloak('https://gn-math.dev')">GN Math</button>
-            <button class="card" onclick="cloak('https://thetravelingtourguide.com')">UniUB v4</button>
-            <button class="card" onclick="cloak('https://coolmathgames.com')">Cool Math Games</button>
-            <button class="card" onclick="cloak('https://baseballbros.io')">Baseball Bros</button>
-            
-            <!-- Google Games -->
-            <button class="card google-card" onclick="cloak('https://google.com')">Google Pac-Man</button>
-            <button class="card google-card" onclick="cloak('https://google.com')">Google Snake</button>
-            <button class="card google-card" onclick="cloak('https://google.com')">Google Doodle Archive</button>
+        <div class="grid" id="gameGrid">
+            <!-- Grid will be populated by JavaScript -->
         </div>
     </div>
 
@@ -70,24 +54,39 @@
     </div>
 
 <script>
+    // --- DATABASE ---
+    const games = [
+        { name: 'Vapor V4', url: 'https://ge-lao-shi.global.ssl.fastly.net/' },
+        { name: "Jordan's Math", url: 'https://learn.ham-tetra.es/' },
+        { name: 'N-Gon', url: 'https://valsamisphysics.com/sidescroller/index.html' },
+        { name: 'Masha Learning', url: 'https://mashalearning.com/c/game?gid=649' },
+        { name: 'Daydream X', url: 'https://study.info.north-kazakhstan.su.cdn.cloudflare.net/' },
+        { name: 'Utopia', url: 'https://cool.wikilegia.org/' },
+        { name: 'LuminalOS 1', url: 'https://iloveteachers.graphicon.org/' },
+        { name: 'LuminalOS 2', url: 'https://playernation.goodfox.com.br/' },
+        { name: 'Rammerhead 1', url: 'https://damianlikesjulie.wakemeup.ru/' },
+        { name: 'Rammerhead 2', url: 'https://notdominospizzeria.fluxus.org/' },
+        { name: 'Rammerhead 3', url: 'https://wecanbebees.primeflk.ch/' },
+        { name: 'Cool Math Games', url: 'https://coolmathgames.com' },
+        { name: 'Google Pac-Man', url: 'https://google.com', special: true },
+        { name: 'Google Snake', url: 'https://google.com', special: true }
+    ];
+
+    // Populate Grid
+    const grid = document.getElementById('gameGrid');
+    games.forEach(game => {
+        const btn = document.createElement('button');
+        btn.className = game.special ? 'card google-card' : 'card';
+        btn.innerHTML = game.name;
+        btn.onclick = () => cloak(game.url);
+        grid.appendChild(btn);
+    });
+
     function cloak(url) {
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
-
-        // Wipes the tab and injects the game to bypass security headers
         document.open();
-        document.write(`
-            <html>
-            <head>
-                <title>${title}</title>
-                <link rel="icon" href="${icon}">
-                <style>body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}iframe{width:100%;height:100%;border:none;}</style>
-            </head>
-            <body>
-                <iframe src="${url}" allowfullscreen referrerpolicy="no-referrer"></iframe>
-            </body>
-            </html>
-        `);
+        document.write(`<html><head><title>${title}</title><link rel="icon" href="${icon}"><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="${url}" allowfullscreen referrerpolicy="no-referrer"></iframe></body></html>`);
         document.close();
     }
 
@@ -116,10 +115,7 @@
         box.style.display = (box.style.display === "block") ? "none" : "block";
     }
 
-    document.getElementById("gearBtn").onclick = toggleSettings;
     setInterval(() => { document.getElementById("time").innerHTML = new Date().toLocaleTimeString(); }, 1000);
 </script>
 </body>
 </html>
-
-
