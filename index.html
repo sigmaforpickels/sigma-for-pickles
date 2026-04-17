@@ -12,8 +12,8 @@
         .gear { position: absolute; top: 15px; right: 15px; width: 42px; height: 42px; border: none; border-radius: 12px; background: #334155; color: white; font-size: 22px; cursor: pointer; }
         .gear:hover { background: #475569; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
-        .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 25px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 20px; }
+        .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; min-height: 80px; }
         .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
         
         .settings { display: none; position: fixed; top: 75px; right: 20px; width: 300px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; }
@@ -22,7 +22,7 @@
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
         .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
         
-        .launch-btn { background: #38bdf8; color: #0f172a; } /* Main Launch Button */
+        .launch-btn { background: #38bdf8; color: #0f172a; }
         .save-btn { background: #2563eb; color: white; }
         .close-btn { background: #475569; color: white; }
 
@@ -44,6 +44,9 @@
                 <button class="card" onclick="openGame('https://gn-math.dev')">GN Math</button>
                 <button class="card" onclick="openGame('https://thetravelingtourguide.com')">UniUB v4</button>
                 <button class="card" onclick="openGame('https://coolmathgames.com')">Cool Math Games</button>
+                <!-- UPDATED NAME: n-gon -->
+                <button class="card" onclick="openGame('https://valsamisphysics.com')">n-gon</button>
+                <button class="card" onclick="openGame('https://wikilegia.org')">Utopia</button>
             </div>
         </div>
 
@@ -52,56 +55,33 @@
         </div>
     </div>
 
-    <!-- SETTINGS MENU -->
     <div class="settings" id="settingsBox">
         <h3>Stealth Settings</h3>
-        
         <label>Tab Name</label>
         <input id="tab-name" type="text" placeholder="e.g. My Drive">
-        
         <label>Icon URL</label>
         <input id="tab-icon" type="text" placeholder="https://google.com">
-
         <button class="save-btn" onclick="saveSettings()">Save Tab Info</button>
-        
         <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
-        
-        <!-- NEW Launch Button -->
         <button class="launch-btn" onclick="launchCloaked()">🚀 Launch About:Blank</button>
-        
         <button class="close-btn" onclick="toggleSettings()">Close</button>
     </div>
 
 <script>
-    // --- 1. CLOAK LAUNCHER ---
     function launchCloaked() {
         const url = window.location.href;
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
-
         const win = window.open('about:blank', '_blank');
         if (win) {
-            win.document.write(`
-                <html>
-                <head>
-                    <title>${title}</title>
-                    <link rel="icon" href="${icon}">
-                    <style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style>
-                </head>
-                <body>
-                    <iframe src="${url}"></iframe>
-                </body>
-                </html>
-            `);
+            win.document.write(`<html><head><title>${title}</title><link rel="icon" href="${icon}"><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="${url}"></iframe></body></html>`);
             win.document.close();
-            // Redirect the original GitHub tab to Google
             window.location.replace("https://google.com");
         } else {
-            alert("❌ Pop-up blocked! Please allow pop-ups to use Cloaked Mode.");
+            alert("❌ Pop-up blocked!");
         }
     }
 
-    // --- 2. GAME LOGIC ---
     function openGame(url) {
         document.getElementById("homeArea").style.display = "none";
         document.getElementById("gameViewer").style.display = "block";
@@ -114,7 +94,6 @@
         document.getElementById("homeArea").style.display = "block";
     }
 
-    // --- 3. SETTINGS LOGIC ---
     function saveSettings() {
         localStorage.setItem("cloakName", document.getElementById("tab-name").value);
         localStorage.setItem("cloakIcon", document.getElementById("tab-icon").value);
@@ -124,8 +103,6 @@
     function toggleSettings() {
         const box = document.getElementById("settingsBox");
         box.style.display = (box.style.display === "block") ? "none" : "block";
-        document.getElementById("tab-name").value = localStorage.getItem("cloakName") || "";
-        document.getElementById("tab-icon").value = localStorage.getItem("cloakIcon") || "";
     }
 
     document.getElementById("gearBtn").onclick = toggleSettings;
@@ -133,3 +110,4 @@
 </script>
 </body>
 </html>
+
