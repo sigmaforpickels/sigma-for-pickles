@@ -23,7 +23,7 @@
         .close-btn { background: #475569; color: white; }
         .refresh-note { padding: 20px; color: #64748b; font-size: 13px; text-align: center; font-style: italic; }
         #hidden-proxy-section { display: none; margin-top: 15px; border-top: 1px solid #334155; padding-top: 15px; }
-        .proxy-btn { background: #334155; color: #94a3b8; font-size: 13px; text-align: left; border: 1px solid transparent; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; }
+        .proxy-btn { background: #334155; color: #94a3b8; font-size: 13px; text-align: left; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; border: 1px solid transparent; }
         .proxy-btn:hover { border-color: #38bdf8; color: white; }
     </style>
 </head>
@@ -39,14 +39,17 @@
         <div class="grid">
             <button class="card" onclick="cloak('https://gn-math.dev')">GN Math</button>
             <button class="card" onclick="cloak('https://coolmathgames.com')">Cool Math Games</button>
-            <button class="card" onclick="cloak('https://thetravelingtourguide.com')">UniUB v4</button>
-            <button class="card" onclick="cloak('https://valsamisphysics.com')">n-gon</button>
+            <button class="card" onclick="cloak('https://mathstudy.xyz')">UniUB v4</button>
+            
+            <!-- ONLY n-gon launches in a separate tab -->
+            <button class="card" onclick="openIsolated('https://github.io')">n-gon</button>
+            
             <button class="card" onclick="cloak('https://wikilegia.org')">Utopia</button>
             <button class="card" onclick="cloak('https://baseballbros.io')">Baseball Bros</button>
         </div>
 
         <div class="refresh-note">
-            💡 If a game doesn't load or shows a white screen, try <b>refreshing the page</b>.
+            💡 If a game doesn't load, try <b>refreshing the page</b>.
         </div>
     </div>
 
@@ -88,31 +91,41 @@
         proxyList.appendChild(btn);
     });
 
-    // --- UPDATED CLOAK FUNCTION ---
+    // --- SEPARATE TAB LAUNCHER (ONLY FOR n-gon) ---
+    function openIsolated(targetUrl) {
+        const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
+        const icon = localStorage.getItem("cloakIcon") || "";
+
+        const win = window.open('about:blank', '_blank');
+        if (win) {
+            win.document.write(`
+                <html>
+                <head>
+                    <title>${title}</title>
+                    <link rel="icon" href="${icon}">
+                    <style>
+                        body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}
+                        iframe{width:100%;height:100%;border:none;}
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${targetUrl}" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </body>
+                </html>
+            `);
+            win.document.close();
+        } else {
+            alert("❌ Pop-up blocked! Allow pop-ups to open n-gon in a hidden tab.");
+        }
+    }
+
+    // --- SAME TAB LAUNCHER (FOR EVERYTHING ELSE) ---
     function cloak(url) {
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
-        
-        const pageContent = `
-            <html>
-            <head>
-                <title>${title}</title>
-                <link rel="icon" href="${icon}">
-                <style>
-                    body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}
-                    iframe{width:100%;height:100%;border:none;}
-                </style>
-            </head>
-            <body>
-                <iframe src="${url}" allowfullscreen referrerpolicy="no-referrer"></iframe>
-            </body>
-            </html>
-        `;
-
-        // Use Blob for N-Gon and Utopia compatibility
-        const blob = new Blob([pageContent], { type: 'text/html' });
-        const blobUrl = URL.createObjectURL(blob);
-        window.location.href = blobUrl;
+        document.open();
+        document.write(`<html><head><title>${title}</title><link rel="icon" href="${icon}"><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="${url}" allowfullscreen referrerpolicy="no-referrer"></iframe></body></html>`);
+        document.close();
     }
 
     function launchAboutBlank() {
@@ -156,4 +169,3 @@
 </script>
 </body>
 </html>
-
