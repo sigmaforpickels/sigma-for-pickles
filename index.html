@@ -16,8 +16,7 @@
         .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; min-height: 80px; }
         .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
         
-        .google-card { border-color: #fbbf24 !important; }
-        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 300px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; }
+        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 320px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; max-height: 80vh; overflow-y: auto; }
         .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
         .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
@@ -25,6 +24,7 @@
         .launch-btn { background: #38bdf8; color: #0f172a; }
         .save-btn { background: #2563eb; color: white; }
         .close-btn { background: #475569; color: white; }
+        .source-btn { background: #334155; color: #94a3b8; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -36,52 +36,37 @@
             <button class="gear" id="gearBtn">⚙</button>
         </div>
 
-        <div class="grid" id="gameGrid">
-            <!-- Grid will be populated by JavaScript -->
+        <div class="grid">
+            <button class="card" onclick="cloak('https://gn-math.dev')">GN Math</button>
+            <button class="card" onclick="cloak('https://coolmathgames.com')">Cool Math Games</button>
+            <button class="card" onclick="cloak('https://thetravelingtourguide.com')">UniUB v4</button>
+            <button class="card" onclick="cloak('https://valsamisphysics.com')">n-gon</button>
+            <button class="card" onclick="cloak('https://wikilegia.org')">Utopia</button>
+            <button class="card" onclick="cloak('https://baseballbros.io')">Baseball Bros</button>
         </div>
     </div>
 
     <div class="settings" id="settingsBox">
-        <h3>Stealth Settings</h3>
+        <h3>Settings</h3>
         <label>Tab Name</label>
         <input id="tab-name" type="text" placeholder="e.g. My Drive">
         <label>Icon URL</label>
         <input id="tab-icon" type="text" placeholder="Icon URL">
         <button class="save-btn" onclick="saveSettings()">Save Tab Info</button>
+        
         <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
         <button class="launch-btn" onclick="launchAboutBlank()">🚀 Launch About:Blank Tab</button>
-        <button class="close-btn" onclick="toggleSettings()">Close</button>
+        
+        <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
+        <label>Hidden Sources (Proxies)</label>
+        <button class="source-btn" onclick="cloak('https://wakemeup.ru')">Rammerhead 1</button>
+        <button class="source-btn" onclick="cloak('https://graphicon.org')">Luminal OS</button>
+        <button class="source-btn" onclick="cloak('https://fastly.net')">Vapor V4</button>
+        
+        <button class="close-btn" onclick="toggleSettings()" style="margin-top:15px;">Close</button>
     </div>
 
 <script>
-    // --- DATABASE ---
-    const games = [
-        { name: 'Vapor V4', url: 'https://ge-lao-shi.global.ssl.fastly.net/' },
-        { name: "Jordan's Math", url: 'https://learn.ham-tetra.es/' },
-        { name: 'N-Gon', url: 'https://valsamisphysics.com/sidescroller/index.html' },
-        { name: 'Masha Learning', url: 'https://mashalearning.com/c/game?gid=649' },
-        { name: 'Daydream X', url: 'https://study.info.north-kazakhstan.su.cdn.cloudflare.net/' },
-        { name: 'Utopia', url: 'https://cool.wikilegia.org/' },
-        { name: 'LuminalOS 1', url: 'https://iloveteachers.graphicon.org/' },
-        { name: 'LuminalOS 2', url: 'https://playernation.goodfox.com.br/' },
-        { name: 'Rammerhead 1', url: 'https://damianlikesjulie.wakemeup.ru/' },
-        { name: 'Rammerhead 2', url: 'https://notdominospizzeria.fluxus.org/' },
-        { name: 'Rammerhead 3', url: 'https://wecanbebees.primeflk.ch/' },
-        { name: 'Cool Math Games', url: 'https://coolmathgames.com' },
-        { name: 'Google Pac-Man', url: 'https://google.com', special: true },
-        { name: 'Google Snake', url: 'https://google.com', special: true }
-    ];
-
-    // Populate Grid
-    const grid = document.getElementById('gameGrid');
-    games.forEach(game => {
-        const btn = document.createElement('button');
-        btn.className = game.special ? 'card google-card' : 'card';
-        btn.innerHTML = game.name;
-        btn.onclick = () => cloak(game.url);
-        grid.appendChild(btn);
-    });
-
     function cloak(url) {
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
@@ -115,6 +100,7 @@
         box.style.display = (box.style.display === "block") ? "none" : "block";
     }
 
+    document.getElementById("gearBtn").onclick = toggleSettings;
     setInterval(() => { document.getElementById("time").innerHTML = new Date().toLocaleTimeString(); }, 1000);
 </script>
 </body>
