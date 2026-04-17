@@ -20,11 +20,12 @@
         .settings h3 { margin: 0 0 15px 0; }
         .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
-        .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; }
-        .save-btn { background: #2563eb; color: white; margin-bottom: 8px; }
+        .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
+        
+        .launch-btn { background: #38bdf8; color: #0f172a; } /* Main Launch Button */
+        .save-btn { background: #2563eb; color: white; }
         .close-btn { background: #475569; color: white; }
 
-        /* Viewer for games */
         .viewer { display: none; width: 100%; height: calc(100vh - 120px); }
         .viewer iframe { width: 100%; height: 100%; border: none; background: white; }
     </style>
@@ -51,45 +52,54 @@
         </div>
     </div>
 
+    <!-- SETTINGS MENU -->
     <div class="settings" id="settingsBox">
-        <h3>Tab Settings</h3>
+        <h3>Stealth Settings</h3>
+        
         <label>Tab Name</label>
-        <input id="tab-name" type="text" placeholder="e.g. Google Drive">
+        <input id="tab-name" type="text" placeholder="e.g. My Drive">
+        
         <label>Icon URL</label>
         <input id="tab-icon" type="text" placeholder="https://google.com">
-        <button class="save-btn" onclick="saveSettings()">Save & Refresh</button>
+
+        <button class="save-btn" onclick="saveSettings()">Save Tab Info</button>
+        
+        <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
+        
+        <!-- NEW Launch Button -->
+        <button class="launch-btn" onclick="launchCloaked()">🚀 Launch About:Blank</button>
+        
         <button class="close-btn" onclick="toggleSettings()">Close</button>
     </div>
 
 <script>
-    // --- 1. INSTANT ABOUT:BLANK CLOAK ---
-    (function() {
-        // Only run the cloak if we are NOT already inside an about:blank frame
-        if (window === window.top && !window.location.href.includes('blob:')) {
-            const url = window.location.href;
-            const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
-            const icon = localStorage.getItem("cloakIcon") || "";
+    // --- 1. CLOAK LAUNCHER ---
+    function launchCloaked() {
+        const url = window.location.href;
+        const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
+        const icon = localStorage.getItem("cloakIcon") || "";
 
-            const win = window.open('about:blank', '_blank');
-            if (win) {
-                win.document.write(`
-                    <html>
-                    <head>
-                        <title>${title}</title>
-                        <link rel="icon" href="${icon}">
-                        <style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style>
-                    </head>
-                    <body>
-                        <iframe src="${url}"></iframe>
-                    </body>
-                    </html>
-                `);
-                win.document.close();
-                // Redirect original GitHub tab to Google for safety
-                window.location.replace("https://google.com");
-            }
+        const win = window.open('about:blank', '_blank');
+        if (win) {
+            win.document.write(`
+                <html>
+                <head>
+                    <title>${title}</title>
+                    <link rel="icon" href="${icon}">
+                    <style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style>
+                </head>
+                <body>
+                    <iframe src="${url}"></iframe>
+                </body>
+                </html>
+            `);
+            win.document.close();
+            // Redirect the original GitHub tab to Google
+            window.location.replace("https://google.com");
+        } else {
+            alert("❌ Pop-up blocked! Please allow pop-ups to use Cloaked Mode.");
         }
-    })();
+    }
 
     // --- 2. GAME LOGIC ---
     function openGame(url) {
@@ -108,7 +118,7 @@
     function saveSettings() {
         localStorage.setItem("cloakName", document.getElementById("tab-name").value);
         localStorage.setItem("cloakIcon", document.getElementById("tab-icon").value);
-        location.reload();
+        alert("Settings Saved!");
     }
 
     function toggleSettings() {
