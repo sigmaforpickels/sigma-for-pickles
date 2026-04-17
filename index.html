@@ -41,12 +41,19 @@
 
         <div id="homeArea">
             <div class="grid">
-                <button class="card" onclick="openGame('https://gn-math.dev')">GN Math</button>
-                <button class="card" onclick="openGame('https://thetravelingtourguide.com')">UniUB v4</button>
-                <button class="card" onclick="openGame('https://coolmathgames.com')">Cool Math Games</button>
-                <!-- UPDATED NAME: n-gon -->
-                <button class="card" onclick="openGame('https://valsamisphysics.com')">n-gon</button>
-                <button class="card" onclick="openGame('https://wikilegia.org')">Utopia</button>
+                <!-- Cool Math Games (Works in frame) -->
+                <button class="card" onclick="openGame('https://www.coolmathgames.com/')">Cool Math Games</button>
+                
+                <!-- These usually block frames, so we use 'forceDirect' -->
+                <button class="card" onclick="openGame('https://gn-math.dev', true)">GN Math</button>
+                <button class="card" onclick="openGame('https://thetravelingtourguide.com', true)">UniUB v4</button>
+                <button class="card" onclick="openGame('https://valsamisphysics.com', true)">n-gon</button>
+                <button class="card" onclick="openGame('https://wikilegia.org', true)">Utopia</button>
+                <button class="card" onclick="openGame('https://baseballbros.io', true)">Baseball Bros</button>
+                
+                <!-- Google Games -->
+                <button class="card" onclick="openGame('https://google.com')">Google Pac-Man</button>
+                <button class="card" onclick="openGame('https://google.com')">Google Games Search</button>
             </div>
         </div>
 
@@ -76,13 +83,19 @@
         if (win) {
             win.document.write(`<html><head><title>${title}</title><link rel="icon" href="${icon}"><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="${url}"></iframe></body></html>`);
             win.document.close();
-            window.location.replace("https://google.com");
+            window.location.replace("https://www.google.com");
         } else {
             alert("❌ Pop-up blocked!");
         }
     }
 
-    function openGame(url) {
+    function openGame(url, forceDirect = false) {
+        // If the site blocks iframes, we just go to the URL directly in this tab
+        if (forceDirect) {
+            window.location.href = url;
+            return;
+        }
+
         document.getElementById("homeArea").style.display = "none";
         document.getElementById("gameViewer").style.display = "block";
         document.getElementById("siteFrame").src = url;
