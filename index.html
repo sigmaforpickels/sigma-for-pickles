@@ -17,7 +17,6 @@
         .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
         
         .settings { display: none; position: fixed; top: 75px; right: 20px; width: 300px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; }
-        .settings h3 { margin: 0 0 15px 0; }
         .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
         .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
@@ -25,57 +24,70 @@
         .launch-btn { background: #38bdf8; color: #0f172a; }
         .save-btn { background: #2563eb; color: white; }
         .close-btn { background: #475569; color: white; }
-
-        .viewer { display: none; width: 100%; height: calc(100vh - 120px); }
-        .viewer iframe { width: 100%; height: 100%; border: none; background: white; }
     </style>
 </head>
 <body>
 
     <div id="main-content">
         <div class="header">
-            <div class="title" onclick="goHome()">Sigma for Pickles</div>
+            <div class="title" onclick="location.reload()">Sigma for Pickles</div>
             <div class="time" id="time">00:00:00</div>
             <button class="gear" id="gearBtn">⚙</button>
         </div>
 
-        <div id="homeArea">
-            <div class="grid">
-                <!-- Cool Math Games (Works in frame) -->
-                <button class="card" onclick="openGame('https://www.coolmathgames.com/')">Cool Math Games</button>
-                
-                <!-- These usually block frames, so we use 'forceDirect' -->
-                <button class="card" onclick="openGame('https://gn-math.dev', true)">GN Math</button>
-                <button class="card" onclick="openGame('https://thetravelingtourguide.com', true)">UniUB v4</button>
-                <button class="card" onclick="openGame('https://valsamisphysics.com', true)">n-gon</button>
-                <button class="card" onclick="openGame('https://wikilegia.org', true)">Utopia</button>
-                <button class="card" onclick="openGame('https://baseballbros.io', true)">Baseball Bros</button>
-                
-                <!-- Google Games -->
-                <button class="card" onclick="openGame('https://google.com')">Google Pac-Man</button>
-                <button class="card" onclick="openGame('https://google.com')">Google Games Search</button>
-            </div>
-        </div>
-
-        <div id="gameViewer" class="viewer">
-            <iframe id="siteFrame" allowfullscreen></iframe>
+        <div class="grid">
+            <!-- Game Section -->
+            <button class="card" onclick="cloak('https://gn-math.dev')">GN Math</button>
+            <button class="card" onclick="cloak('https://thetravelingtourguide.com')">UniUB v4</button>
+            <button class="card" onclick="cloak('https://coolmathgames.com')">Cool Math Games</button>
+            <button class="card" onclick="cloak('https://valsamisphysics.com')">n-gon</button>
+            <button class="card" onclick="cloak('https://wikilegia.org')">Utopia</button>
+            <button class="card" onclick="cloak('https://baseballbros.io')">Baseball Bros</button>
+            
+            <!-- Google Games Section -->
+            <button class="card" style="border-color: #fbbf24;" onclick="cloak('https://google.com')">Google Pac-Man</button>
+            <button class="card" style="border-color: #fbbf24;" onclick="cloak('https://google.com')">Google Snake</button>
+            <button class="card" style="border-color: #fbbf24;" onclick="cloak('https://google.com')">Google Doodle Archive</button>
         </div>
     </div>
 
     <div class="settings" id="settingsBox">
         <h3>Stealth Settings</h3>
         <label>Tab Name</label>
-        <input id="tab-name" type="text" placeholder="e.g. My Drive">
+        <input id="tab-name" type="text" placeholder="e.g. Google Classroom">
         <label>Icon URL</label>
-        <input id="tab-icon" type="text" placeholder="https://google.com">
+        <input id="tab-icon" type="text" placeholder="Icon Link">
         <button class="save-btn" onclick="saveSettings()">Save Tab Info</button>
         <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
-        <button class="launch-btn" onclick="launchCloaked()">🚀 Launch About:Blank</button>
+        <button class="launch-btn" onclick="launchAboutBlank()">🚀 Launch About:Blank Tab</button>
         <button class="close-btn" onclick="toggleSettings()">Close</button>
     </div>
 
 <script>
-    function launchCloaked() {
+    // --- 1. CLOAKING ENGINE (SAME TAB) ---
+    function cloak(url) {
+        const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
+        const icon = localStorage.getItem("cloakIcon") || "";
+
+        // Completely rewrites the current page to avoid iframe blocking
+        document.open();
+        document.write(`
+            <html>
+            <head>
+                <title>${title}</title>
+                <link rel="icon" href="${icon}">
+                <style>body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}iframe{width:100%;height:100%;border:none;}</style>
+            </head>
+            <body>
+                <iframe src="${url}" allowfullscreen referrerpolicy="no-referrer"></iframe>
+            </body>
+            </html>
+        `);
+        document.close();
+    }
+
+    // --- 2. ABOUT:BLANK TAB LAUNCHER ---
+    function launchAboutBlank() {
         const url = window.location.href;
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
@@ -85,28 +97,11 @@
             win.document.close();
             window.location.replace("https://www.google.com");
         } else {
-            alert("❌ Pop-up blocked!");
+            alert("❌ Pop-up blocked! Allow pop-ups and try again.");
         }
     }
 
-    function openGame(url, forceDirect = false) {
-        // If the site blocks iframes, we just go to the URL directly in this tab
-        if (forceDirect) {
-            window.location.href = url;
-            return;
-        }
-
-        document.getElementById("homeArea").style.display = "none";
-        document.getElementById("gameViewer").style.display = "block";
-        document.getElementById("siteFrame").src = url;
-    }
-
-    function goHome() {
-        document.getElementById("siteFrame").src = "";
-        document.getElementById("gameViewer").style.display = "none";
-        document.getElementById("homeArea").style.display = "block";
-    }
-
+    // --- 3. SETTINGS & UTILS ---
     function saveSettings() {
         localStorage.setItem("cloakName", document.getElementById("tab-name").value);
         localStorage.setItem("cloakIcon", document.getElementById("tab-icon").value);
@@ -116,6 +111,8 @@
     function toggleSettings() {
         const box = document.getElementById("settingsBox");
         box.style.display = (box.style.display === "block") ? "none" : "block";
+        document.getElementById("tab-name").value = localStorage.getItem("cloakName") || "";
+        document.getElementById("tab-icon").value = localStorage.getItem("cloakIcon") || "";
     }
 
     document.getElementById("gearBtn").onclick = toggleSettings;
