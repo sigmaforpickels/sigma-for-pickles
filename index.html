@@ -11,12 +11,13 @@
         .time { margin-top: 8px; color: #cbd5e1; font-size: 18px; }
         .gear { position: absolute; top: 15px; right: 15px; width: 42px; height: 42px; border: none; border-radius: 12px; background: #334155; color: white; font-size: 22px; cursor: pointer; }
         .gear:hover { background: #475569; }
-        
+
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 20px; }
         .card { background: #1e293b; color: white; border: 1px solid #334155; border-radius: 12px; padding: 20px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; min-height: 80px; }
         .card:hover { background: #334155; transform: translateY(-3px); border-color: #38bdf8; }
+
+        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 320px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; max-height: 85vh; overflow-y: auto; }
         
-        .settings { display: none; position: fixed; top: 75px; right: 20px; width: 320px; background: #1e293b; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; border: 1px solid #334155; max-height: 80vh; overflow-y: auto; }
         .settings label { display: block; margin-bottom: 5px; color: #cbd5e1; font-size: 14px; }
         .settings input { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: none; background: #0f172a; color: white; margin-bottom: 15px; }
         .settings button { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
@@ -24,7 +25,11 @@
         .launch-btn { background: #38bdf8; color: #0f172a; }
         .save-btn { background: #2563eb; color: white; }
         .close-btn { background: #475569; color: white; }
-        .source-btn { background: #334155; color: #94a3b8; font-size: 12px; }
+
+        /* Hidden Proxy Section */
+        #hidden-proxy-section { display: none; margin-top: 15px; border-top: 1px solid #334155; padding-top: 15px; }
+        .proxy-btn { background: #334155; color: #94a3b8; font-size: 13px; text-align: left; padding-left: 15px; border: 1px solid transparent; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; }
+        .proxy-btn:hover { border-color: #38bdf8; color: white; }
     </style>
 </head>
 <body>
@@ -46,6 +51,7 @@
         </div>
     </div>
 
+    <!-- SETTINGS MENU -->
     <div class="settings" id="settingsBox">
         <h3>Settings</h3>
         <label>Tab Name</label>
@@ -56,17 +62,39 @@
         
         <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
         <button class="launch-btn" onclick="launchAboutBlank()">🚀 Launch About:Blank Tab</button>
+
+        <!-- THIS SECTION IS INVISIBLE UNTIL CODE IS PRESSED -->
+        <div id="hidden-proxy-section">
+            <h4 style="color: #38bdf8; margin: 5px 0 10px 0;">Hidden Proxies</h4>
+            <div id="proxyList"></div>
+        </div>
         
-        <hr style="border: 0; border-top: 1px solid #334155; margin: 10px 0;">
-        <label>Hidden Sources (Proxies)</label>
-        <button class="source-btn" onclick="cloak('https://wakemeup.ru')">Rammerhead 1</button>
-        <button class="source-btn" onclick="cloak('https://graphicon.org')">Luminal OS</button>
-        <button class="source-btn" onclick="cloak('https://fastly.net')">Vapor V4</button>
-        
-        <button class="close-btn" onclick="toggleSettings()" style="margin-top:15px;">Close</button>
+        <button class="close-btn" onclick="toggleSettings()" style="margin-top: 10px;">Close</button>
     </div>
 
 <script>
+    const proxies = [
+        { name: 'Vapor V4', url: 'https://fastly.net' },
+        { name: "Jordan's Math", url: 'https://ham-tetra.es' },
+        { name: 'Masha Learning', url: 'https://mashalearning.com' },
+        { name: 'Daydream X', url: 'https://cloudflare.net' },
+        { name: 'LuminalOS 1', url: 'https://graphicon.org' },
+        { name: 'LuminalOS 2', url: 'https://goodfox.com.br' },
+        { name: 'Rammerhead 1', url: 'https://wakemeup.ru' },
+        { name: 'Rammerhead 2', url: 'https://fluxus.org' },
+        { name: 'Rammerhead 3', url: 'https://primeflk.ch' }
+    ];
+
+    // Build Proxy List in background
+    const proxyList = document.getElementById('proxyList');
+    proxies.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'proxy-btn';
+        btn.innerHTML = p.name;
+        btn.onclick = () => cloak(p.url);
+        proxyList.appendChild(btn);
+    });
+
     function cloak(url) {
         const title = localStorage.getItem("cloakName") || "Sigma for Pickles";
         const icon = localStorage.getItem("cloakIcon") || "";
@@ -84,8 +112,6 @@
             win.document.write(`<html><head><title>${title}</title><link rel="icon" href="${icon}"><style>body,html{margin:0;padding:0;height:100%;overflow:hidden;}iframe{width:100%;height:100%;border:none;}</style></head><body><iframe src="${url}"></iframe></body></html>`);
             win.document.close();
             window.location.replace("https://google.com");
-        } else {
-            alert("❌ Pop-up blocked!");
         }
     }
 
@@ -98,7 +124,24 @@
     function toggleSettings() {
         const box = document.getElementById("settingsBox");
         box.style.display = (box.style.display === "block") ? "none" : "block";
+        // Hide proxies again whenever menu is closed
+        if (box.style.display === "none") {
+            document.getElementById("hidden-proxy-section").style.display = "none";
+        }
     }
+
+    // --- ⌨️ THE SECRET TRIGGER ---
+    document.addEventListener('keydown', function(e) {
+        const box = document.getElementById("settingsBox");
+        // Only works if Settings menu is ALREADY OPEN
+        if (box.style.display === "block") {
+            // Secret Code: Shift + Ctrl + M
+            if (e.shiftKey && e.ctrlKey && e.key.toLowerCase() === 'm') {
+                e.preventDefault();
+                document.getElementById("hidden-proxy-section").style.display = "block";
+            }
+        }
+    });
 
     document.getElementById("gearBtn").onclick = toggleSettings;
     setInterval(() => { document.getElementById("time").innerHTML = new Date().toLocaleTimeString(); }, 1000);
